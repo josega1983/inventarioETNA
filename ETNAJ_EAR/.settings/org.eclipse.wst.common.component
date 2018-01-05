@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="ETNAJ_EAR">
+        <wb-resource deploy-path="/" source-path="/EarContent" tag="defaultRootSource"/>
+        <dependent-module archiveName="ETNAJ_WEB.war" deploy-path="/" handle="module:/resource/ETNAJ_WEB/ETNAJ_WEB">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+		<dependent-module archiveName="INVENTARIO_WEB.war" deploy-path="/" handle="module:/resource/INVENTARIO_WEB/INVENTARIO_WEB">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+    </wb-module>
+</project-modules>
