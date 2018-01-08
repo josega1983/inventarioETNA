@@ -12,7 +12,7 @@
 	<packaging>ear</packaging>
 	<name>ETNAJ_EAR</name>
 	<version>${version.release}</version>
-	<description>Ear de ETNAJ DSPINA</description>
+	<description>Ear de ETNAJ jgromero</description>
 	<build>
 		<plugins>
 			<plugin>
