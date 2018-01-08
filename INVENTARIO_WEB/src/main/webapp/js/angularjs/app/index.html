@@ -1,0 +1,64 @@
+
+
+<!-- build:css(.tmp) styles/main.css -->
+  <link rel="bower_components/vis/dist/vis.css" href="styles/main.css">
+  <link rel="stylesheet" href="styles/enaire.css">
+  <link rel="stylesheet" href="bower_components/sweetalert/dist/sweetalert.css" />
+  <link rel="stylesheet" href="bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css"/>
+  <link rel="stylesheet" href="styles/header.css">
+  <link rel="stylesheet" href="styles/structure.css">
+  <link rel="stylesheet" href="styles/menu.css">
+  <link rel="stylesheet" href="styles/font-icons.css">
+  <link rel="stylesheet" href="styles/sweetalert-modifications.css">
+  <link rel="stylesheet" href="styles/main.css">
+<!-- endbuild -->
+
+
+
+<!-- build:js(.) scripts/vendor.js -->
+  <!-- bower:js -->
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.js"></script>
+  <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <script src="bower_components/angular-touch/angular-touch.js"></script>
+  <script src="bower_components/vis/dist/vis.js"></script>
+  <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:js({.tmp,app}) scripts/scripts.js -->
+  <script src="scripts/app.js"></script>
+  <script src="scripts/controllers/main.js"></script>
+  <script src="scripts/directives/canvasOptions-directive.js"></script>
+  <script src="scripts/directives/draggableHandler-directive.js"></script>
+  <script src="scripts/directives/resizeHandler-directive.js"></script>
+  <script src="scripts/directives/nodeOptions-directive.js"></script>
+  <script src="scripts/providers/element-service.js"></script>
+  <script src="scripts/providers/visCustom-factory.js"></script>
+<!-- endbuild -->
+
+
+
+
+<body id="buscar" ng-app="inventarioApp" ng-class="{'menu-lateral-activo': $root.despelgarMenu}">
+    <div class="contenedor">
+      <header class="cabeceraPrincipal" ng-include src="'views/header.html'">
+      </header>
+      <div class="main-container">
+        <div class="menu" id="menu" ng-include src="'views/menu.html'">
+        </div>
+        <div class="contenido">
+          <div class="configuration-container">
+            <section class="views-wrapper" ng-view>
+            </section>
+          </div>
+        </div>
+      </div>
+      <footer class="footer" ng-include="">
+      </footer>
+    </div>
+</body>

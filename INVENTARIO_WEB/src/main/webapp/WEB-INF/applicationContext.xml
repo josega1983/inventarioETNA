@@ -1,0 +1,57 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:annotation-config/>
+
+
+	<!-- ************ JPA configuration *********** -->
+   	<tx:annotation-driven transaction-manager="transactionManager" />
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="inventarioDB" />
+        <property name="dataSource" ref="etnaDS" />
+        <property name="packagesToScan" value="es.aena.model" />
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="showSql" value="true" />
+                <property name="databasePlatform" value="org.hibernate.dialect.Oracle10gDialect" />
+            </bean>
+        </property>
+    </bean>
+
+	<bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"/>
+
+	<!-- DATA SOURCE -->
+	<bean id="etnaDS" class="org.springframework.jndi.JndiObjectFactoryBean" scope="singleton">
+	    <property name="jndiName" value="EtnaDS" />
+	    <property name="resourceRef" value="true" />
+	</bean>
+
+	
+	<!-- OPERACIONES  -->
+
+	<import resource="spring/operaciones-beans.xml"/>
+
+	<!-- DAOS -->
+
+	<import resource="spring/dao-beans.xml"/>
+
+	
+	
+	<!-- FACADE DE BACKEND -->
+	<bean id="facadeBackend" class="es.enaire.inventario.backend.FacadeMIBackend" scope="prototype"></bean>
+	
+
+
+	<!-- ACCIONES -->
+	<import resource="spring/action-beans.xml"/>
+	
+
+
+	<context:property-placeholder location="classpath:inventario.properties" ignore-resource-not-found="true" ignore-unresolvable="false" />
+</beans>

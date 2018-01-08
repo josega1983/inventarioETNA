@@ -1,0 +1,156 @@
+<ng-controller ng-controller="MainCtrl as main">
+    <ng-controller ng-controller="FamilyConfigurationCtrl as familyConf">
+    <div class="inventory-form">
+        <div class="form-view">
+            <h2 class="titulo-seccion">CONFIGURACIÓN FORMULARIO</h2>
+            <div class="form-row">
+                <label class="col-max">
+                    <span class="etiqueta">Observaciones</span>
+                    <span class="dato"><textarea type="text" maxlength="500" required="true" value="" ng-model="familyConf.configurationObs"></textarea></span>
+                </label>
+            </div>
+        </div>
+
+        <h2 class="titulo-seccion">
+            CONFIGURACIÓN ARBOL
+            <!-- <span class="icon icon-info"></span>
+            <div class="configuration-info">
+                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.
+            </div> -->
+        </h2>
+    </div>
+
+    <div class="inventory">
+        <div class="graph-container">
+            <div id="graph" 
+                class="graph-canvas ui-droppable" 
+                resize-handler="$root.resizeCanvas()" 
+                ng-class="{'cursor-pointer': main.hoverNode, 'canvas-fullscreen': main.isFullscreen}">
+            </div>
+            <div ng-if="main.showCanvasLoader" class="loader-background">
+                <div class="loader"></div>
+            </div>
+            <canvas-options-directive 
+                fullscreen-flag="main.isFullscreen" 
+                zoom-in-fn="main.zoomInCanvas()" 
+                zoom-out-fn="main.zoomOutCanvas()" 
+                fullscreen-fn="main.canvasFullscreen()" 
+                center-fn="main.centerTree()">
+            </canvas-options-directive>
+        </div>
+
+        <div class="elements-container">
+
+            <!-- INSTALLATION CONTAINER -->
+            <div class="elements" ng-if="!familyConf.disableInstallationList">
+                <div class="header">
+                    <p class="">Familia de Instalaciones</p>
+                </div>
+                <div class="content">
+                    <!-- <div class="disabled-element-list"> -->
+
+                    <!-- ELEMENTS SEARCH FIELDS -->
+                    <div class="form-row">
+                        <label class="col-min">
+                            <span class="dato search-input">
+                                <input ng-keyup="familyConf.search($root.INSTALLATION_TYPE)" class="white" type="text" value="" maxlength="30" ng-model="familyConf.searchValues.nombre">
+                                <span class="icon icon-search"></span>
+                            </span>
+                        </label>
+                    </div>
+
+                    <!-- SEARCH INFO -->
+                    <div class="search-info" ng-repeat="(key, filter) in familyConf.searchValues" ng-if="(filter != null && filter != '') && !familyConf.showSearch">
+                        <div class="icon icon-filter"><div class="color-blue">{{key.split('.').pop()}}:&nbsp;</div>{{filter}}</div>
+                        <div class="clear-search icon icon-remove" ng-click="familyConf.clearFilter($root.INSTALLATION_TYPE, key)"></div>
+                    </div>
+
+                    <!-- INSTALLATION LIST -->
+                    <ul class="draggable-elements" ng-if="!familyConf.showSearch" scroll-vertical-handler="familyConf.getMoreResults($root.INSTALLATION_TYPE)">
+                        <li 
+                            ng-if="!familyConf.disableInstallationList && familyConf.installationsList.list.length > 0" 
+                            class="ui-draggable ui-draggable-handle" 
+                            ng-repeat="instalacion in familyConf.installationsList.list track by $index" 
+                            data-index="{{$index}}" 
+                            data-type="{{$root.INSTALLATION_TYPE}}" 
+                            ng-click="familyConf.createInstallationFamily($index)"
+                            draggable-handler>
+                                {{instalacion.nombre}}
+                        </li>
+
+                        <!-- NO RESULTS VIEW -->
+                        <div class="no-results icon icon-notification" ng-if="!familyConf.disableInstallationList && familyConf.installationsList.list.length <= 0  && !familyConf.showListLoader">
+                            No existen elementos.
+                        </div>
+
+                        <!-- LOADER -->
+                        <div class="loader2" ng-if="familyConf.showListLoader"></div>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ELEMENTS CONTAINER -->
+            <div class="elements"  ng-if="!familyConf.disableElementsList">
+                <div class="header">
+                    <p>Familia de Elementos</p>
+                </div>
+                <div class="content">
+
+                    <!-- ELEMENTS SEARCH FIELDS -->
+                    <div class="form-row">
+                        <label class="col-min">
+                            <span class="dato search-input">
+                                <input ng-keyup="familyConf.search($root.ELEMENT_TYPE)" class="white" type="text" value="" maxlength="30" ng-model="familyConf.searchValues.nombre">
+                                <span class="icon icon-search"></span>
+                            </span>
+                        </label>
+                    </div>
+
+                    <!-- SEARCH INFO -->
+                    <div class="search-info" ng-repeat="(key, filter) in familyConf.searchValues" ng-if="(filter != null && filter != '') && !familyConf.showSearch">
+                        <div class="icon icon-filter"><div class="color-blue">{{key.split('.').pop()}}:&nbsp;</div>{{filter}}</div>
+                        <div class="clear-search icon icon-remove" ng-click="familyConf.clearFilter($root.ELEMENT_TYPE, key)"></div>
+                    </div>
+
+                    <!-- ELEMENTS LIST -->
+                    <ul class="draggable-elements" ng-if="!familyConf.showSearch" scroll-vertical-handler="familyConf.getMoreResults($root.ELEMENT_TYPE)">
+                        <li 
+                            ng-if="!familyConf.disableElementsList && familyConf.elementsList.list.length > 0" 
+                            class="ui-draggable ui-draggable-handle" 
+                            ng-repeat="element in familyConf.elementsList.list track by $index" 
+                            data-index="{{$index}}" 
+                            data-type="{{$root.ELEMENT_TYPE}}" 
+                            draggable-handler>
+                                {{element.nombre}}
+                        </li>
+
+                        <!-- NO RESULTS VIEW -->
+                        <div class="no-results icon icon-notification" ng-if="!familyConf.disableElementsList && familyConf.elementsList.list.length <= 0 && !familyConf.showListLoader">
+                            No existen elementos.
+                        </div>
+
+                        <!-- LOADER -->
+                        <div class="loader2" ng-if="familyConf.showListLoader"></div>
+                    </ul>
+                </div>
+            </div>
+            <div class="botoneraAccionesPie">
+                <form id="formularioVolverBack" action='/ETNAJ/MI/migas/volverBack' method='post'>
+                    <input type="submit" id="botonVolver" value="Volver" class="formulario-boton" formnovalidate="">
+                </form>
+                <input type="submit" value="Guardar" id="formularioCrearRegion_global_save" ng-click="familyConf.saveConfiguration()"  class="formulario-boton">
+            </div>
+        </div>
+    </div>
+
+    <node-options-directive 
+        modal-info="main.modal" 
+        close-fn="main.closeMenu()" 
+        edit-fn="main.editNode()" 
+        clone-fn="main.duplicateBranch()" 
+        delete-fn="main.deleteNode()"
+        copy-fn="main.copyBranch()"
+        paste-fn="main.pasteBranch()">        
+    </node-options-directive>
+    </ng-controller>
+</ng-controller>

@@ -1,0 +1,182 @@
+<div class="configuration-family">
+        <div class="header icon icon-search" ng-click="typeConf.showCarouselSearch = !typeConf.showCarouselSearch;" ng-class="{'icon-search' : !typeConf.showCarouselSearch, 'icon-remove' : typeConf.showCarouselSearch}">
+            <p>Seleccion Configuración de familias</p>
+        </div>
+        <div class="content">
+
+            <%-- CFC SEARCH FIELDS --%>
+            <div class="search-fields form-view hidden" ng-class="{'hidden' : !typeConf.showCarouselSearch}">
+                <div class="form-row">
+                    <label class="col-min obligatorio">
+                        <span class="etiqueta">Nombre</span>
+                        <span class="dato">
+                            <input type="text" value="" maxlength="30" ng-model="typeConf.searchCarouselValues['familiaInstalacion.nombre']">
+                        </span>
+                    </label>
+                </div>
+                <div class="form-row search-buttons">
+                    <input type="submit" value="Buscar" ng-click="typeConf.carouselSearch()"  class="formulario-boton">
+                    <input type="submit" value="Limpiar" ng-click="typeConf.clearCarouselSearch()" class="formulario-boton formulario-boton2">
+                </div>
+            </div>
+
+            <%-- SEARCH INFO --%>
+            <div class="search-info" ng-repeat="(key, filter) in typeConf.searchCarouselValues" ng-if="!typeConf.showCarouselSearch && (filter != null && filter != '')">
+                <div class="icon icon-filter"><div class="color-blue">{{key.split('.').pop()}}:&nbsp;</div>{{filter}}</div>
+                <div class="clear-search icon icon-remove" ng-click="typeConf.clearCarouselFilter(key)"></div>
+            </div>
+
+            <%-- CREATE NEW --%>
+            <div class="search-fields search-buttons" ng-class="{'hidden' : typeConf.showCarouselSearch}">
+                <div class="form-row search-buttons create-new">
+                    <input type="submit" value="Crear Nuevo"  class="formulario-boton formulario-boton2" ng-click="typeConf.defineCTCfromZero()">
+                </div>
+            </div>
+
+            <%-- OWL CAROUSEL LIST --%>
+            <data-owl-carousel class="owl-carousel owl-theme">
+                <div 
+                    owl-carousel-item="" 
+                    class="item carousel-item" 
+                    ng-repeat="conf in typeConf.configurationConcatList track by $index" 
+                    ng-click="typeConf.openConfigurationFamilyModal($index, conf.familiaInstalacion ? $root.FAMILY_CONFIGURATION : $root.TYPE_CONFIGURATION)"
+                    ng-init="typeConf.initializeCarousel()">
+                    <div class="title" ng-if="conf.familiaInstalacion">{{conf.familiaInstalacion.nombre}}</div>
+                    <div class="title" ng-if="conf.tipoInstalacion">{{conf.tipoInstalacion.familiaInstalacion.nombre}} | {{conf.tipoInstalacion.marca}} | {{conf.tipoInstalacion.modelo}}</div>
+                    <img src="../img/arbol.png"/>
+                </div>
+                <div class="item carousel-item-loader" ng-if="typeConf.showCarouselLoader">
+                    <div class="loader2"></div>
+                </div>
+
+                <%-- NO RESULTS VIEW --%>
+                <div class="item carousel-item-no-result"  ng-if="typeConf.configurationConcatList.length <= 0">
+                    <div class="no-results icon icon-notification">
+                        No existen elementos.
+                    </div>
+                </div>
+            </data-owl-carousel>
+
+            <%-- DISABLED CAROUSEL --%>
+            <div class="disabled-carousel" ng-show="typeConf.showCarouselDisabled"></div>
+        </div>
+    </div>
+
+
+    <%-- MODAL USED TO DISPLAY THE CFC TREE --%>
+    <div class="modal-configuration hidden" ng-class="{'hidden' : !typeConf.showConfigurationModal}">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Configuración Familia: {{typeConf.modalTitle}}</div>
+                <div class="icon icon-remove" ng-click="typeConf.closeConfigurationFamilyModal()"></div>
+            </div>
+            <div class="modal-graph">
+                <div id="modal-graph">
+                </div>
+                <div ng-if="typeConf.showCanvasModalLoader" class="loader-background">
+                    <div class="loader"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="form-row search-buttons">
+                    <input type="submit" value="Aplicar"  class="formulario-boton"  ng-click="typeConf.defineCTCFromOther()">
+                    <input type="submit" value="Cancelar" ng-click="typeConf.closeConfigurationFamilyModal()" class="formulario-boton formulario-boton2">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="inventory">
+        <div class="graph-container">
+            <div id="graph" 
+                class="graph-canvas ui-droppable" 
+                resize-handler="$root.resizeCanvas()" 
+                ng-class="{'cursor-pointer': typeConf.hoverNode, 'canvas-fullscreen': typeConf.isFullscreen}">
+            </div>
+            <div ng-if="typeConf.showCanvasLoader" class="loader-background">
+                <div class="loader"></div>
+            </div>
+            <canvas-options-directive 
+                fullscreen-flag="main.isFullscreen" 
+                zoom-in-fn="main.zoomInCanvas()" 
+                zoom-out-fn="main.zoomOutCanvas()" 
+                fullscreen-fn="main.canvasFullscreen()" 
+                center-fn="main.centerTree()">
+            </canvas-options-directive>
+        </div>
+
+
+        <div class="elements-container">
+
+            <%-- ELEMENTS CONTAINER --%>
+            <div class="elements">
+                <div class="header icon icon-search" ng-click="typeConf.showSearch = !typeConf.showSearch" ng-class="{'icon-search' : !typeConf.showSearch, 'icon-remove' : typeConf.showSearch}">
+                    <p>Familia de Elementos</p>
+                </div>
+                <div class="content">
+                    <div class="disabled-element-list" ng-if="main.numNodes <= 0"></div>
+
+                    <%-- ELEMENTS SEARCH FIELDS --%>
+                    <div class="search-fields form-view" ng-class="{'hidden' : !typeConf.showSearch}">
+                        <div class="form-row">
+                            <label class="col-min obligatorio">
+                                <span class="etiqueta">Nombre</span>
+                                <span class="dato">
+                                    <input type="text" value="" maxlength="30" ng-model="typeConf.searchValues.nombre">
+                                </span>
+                            </label>
+                        </div>
+                        <div class="form-row search-buttons">
+                            <input type="submit" value="Buscar" ng-click="typeConf.search()"  class="formulario-boton">
+                            <input type="submit" value="Limpiar" ng-click="typeConf.clearSearch()" class="formulario-boton formulario-boton2">
+                        </div>
+                    </div>
+
+                    <%-- SEARCH INFO --%>
+                    <div class="search-info" ng-repeat="(key, filter) in typeConf.searchValues" ng-if="(filter != null && filter != '') && !typeConf.showSearch">
+                        <div class="icon icon-filter"><div class="color-blue">{{key.split('.').pop()}}:&nbsp;</div>{{filter}}</div>
+                        <div class="clear-search icon icon-remove" ng-click="typeConf.clearFilter(key)"></div>
+                    </div>
+
+                    <%-- ELEMENTS LIST --%>
+                    <ul class="draggable-elements" ng-if="!typeConf.showSearch" scroll-vertical-handler="typeConf.getMoreResults()">
+                        <li 
+                            ng-if="typeConf.elementsList.list.length > 0" 
+                            class="ui-draggable ui-draggable-handle" 
+                            ng-repeat="element in typeConf.elementsList.list track by $index" 
+                            data-index="{{$index}}" 
+                            data-type="{{$root.ELEMENT_TYPE}}" 
+                            draggable-handler>
+                                {{element.nombre}}
+                        </li>
+
+                        <%-- NO RESULTS VIEW --%>
+                        <div class="no-results icon icon-notification" ng-if="typeConf.elementsList.list.length <= 0  && !typeConf.showListLoader">
+                            No existen elementos.
+                        </div>
+
+                        <%-- LOADER --%>
+                        <div class="loader2" ng-if="typeConf.showListLoader"></div>
+                    </ul>
+                </div>
+            </div>
+            <div class="botoneraAccionesPie" ng-class="{'hidden' : typeConf.showSearch}">
+                <form id="formularioVolverBack" action='/ETNAJ/MI/migas/volverBack' method='post'>
+                    <input type="submit" id="botonVolver" value="Volver" class="formulario-boton" formnovalidate="">
+                </form>
+                <input type="submit" value="Guardar" id="formularioCrearRegion_global_save" ng-click="typeConf.saveConfiguration()"  class="formulario-boton">
+            </div>
+        </div>
+    </div>
+
+    <node-options-directive 
+        modal-info="main.modal" 
+        close-fn="main.closeMenu()" 
+        edit-fn="main.editNode()" 
+        clone-fn="main.duplicateBranch()" 
+        delete-fn="main.deleteNode()"
+        copy-fn="main.copyBranch()"
+        paste-fn="main.pasteBranch()">
+    </node-options-directive>

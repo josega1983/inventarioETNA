@@ -1,0 +1,2130 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+    <constant name="struts.custom.i18n.resources" value="global"/>
+    <constant name="struts.xwork.chaining.copyErrors" value="true"/>
+	<constant name="struts.xwork.chaining.copyFieldErrors" value="true" />
+	<constant name="struts.xwork.chaining.copyMessages" value="true" />
+<!-- <constant name="struts.enable.DynamicMethodInvocation" value="true"/> -->
+	<constant name="struts.enable.SlashesInActionNames" value="true"/>
+	<constant name="struts.mapper.action.prefix.enabled" value="true"/>
+	<constant name="struts.multipart.maxSize" value="1000000" />
+
+
+
+    <package name="authenticate-default" extends="struts-default" abstract="true">
+		<interceptors>
+			<interceptor class="es.enaire.inventario.interceptors.AuthenticateInterceptor" name="authenticateInterceptor"/>
+<!-- 			<interceptor class="es.enaire.inventario.interceptors.FileInterceptor" name="fileInterceptor"/> -->
+			<interceptor-stack name="authenticateStack">
+				<interceptor-ref name="authenticateInterceptor" />
+				<interceptor-ref name="defaultStack" />
+<!-- 				<interceptor-ref name="fileInterceptor" /> -->
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="authenticateStack"/>
+	</package>
+
+	<package name="no-authenticate-default" extends="struts-default" abstract="true">
+		<interceptors>
+			<interceptor-stack name="no-authenticateStack">
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="no-authenticateStack"/>
+	</package>
+
+
+	<package name="default" namespace="/" extends="authenticate-default">
+        <result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="fileResult" class="es.enaire.inventario.results.FileBytesResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="welcomeLink" method="welcome" class="welcomeAction">
+			<result name="welcome" type="tiles">welcome</result>
+		</action>
+		<action name="sinPermisos" method="sinPermisos" class="loginAction">
+			<result name="success" type="tiles">sinPermisos</result>
+		</action>
+		<action name="logOut" method="logOut" class="loginAction">
+			<result name="success" type="tiles">salir</result>
+		</action>
+
+		<action name="includes">
+			<result name="success">/jsp/common/includes.jsp</result>
+		</action>
+    </package>
+
+	<package strict-method-invocation="false" name="authenticate" namespace="/authenticate" extends="no-authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="authenticate_*" method="authenticate" class="welcomeAction">
+			<param name="user">{1}</param>
+			<result name="welcomeLink" type="redirectAction">
+				<param name="actionName">welcomeLink</param>
+				<param name="namespace">/</param>
+			</result>
+		</action>
+	</package>
+
+
+
+	<package name="migas" namespace="/migas" extends="authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+			<result name="errorSesionExpired" type="tiles">errorSession</result>
+		</global-results>
+		<action name="addNewMigaFija" method="addNewMigaFija" class="migasAction">
+			<result name="success" type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="removeMigaFija" method="removeMigaFija" class="migasAction">
+			<result name="success" type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="clickMigaFija" method="clickMigaFija" class="migasAction">
+			<result name="success" type="redirectAction">
+				<param name="actionName">${migaPanSeleccionada.accionNombre}</param>
+				<param name="namespace">${migaPanSeleccionada.espacioNombre}</param>
+			</result>
+		</action>
+		<action name="clickMiga" method="clickMiga" class="migasAction">
+			<result name="success" type="redirectAction">
+				<param name="actionName">${migaPanSeleccionada.accionNombre}</param>
+				<param name="namespace">${migaPanSeleccionada.espacioNombre}</param>
+			</result>
+		</action>
+		<action name="volverBack" method="volverBack" class="migasAction">
+			<result name="success" type="redirectAction">
+				<param name="actionName">${migaPanSeleccionada.accionNombre}</param>
+				<param name="namespace">${migaPanSeleccionada.espacioNombre}</param>
+			</result>
+		</action>
+	</package>
+
+	<package name="centro" namespace="/centro" extends="authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="list" method="list" class="centroAction">
+			<result name="success" type="tiles">list/centro</result>
+		</action>
+		<action name="volverList" method="volverList" class="centroAction">
+			<result name="success" type="tiles">list/centro</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="centroAction">
+			<result name="success">/jsp/centro/paginaList.jsp</result>
+		</action>
+
+		<action name="preExportarList" method="preExportarList" class="centroAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="exportarList_PDF" method="exportarList_PDF" class="centroAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/common/listado.jasper</param>
+				<param name="dataSource">list</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">PDF</param>
+			</result>
+		</action>
+		<action name="exportarList_XLS" method="exportarList_XLS" class="centroAction">
+        	<result type="stream">
+           	 	<param name="contentType">${excelContentType}</param>
+            	<param name="inputName">inputStream</param>
+            	<param name="contentDisposition">${contentDisposition}</param>
+            	<param name="bufferSize">1024</param>
+        	</result>
+    	</action>
+		<action name="exportarShowMore_*" method="exportarShowMore" class="centroAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/common/showMore.jasper</param>
+				<param name="dataSource">elemento</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">{1}</param>
+			</result>
+		</action>
+
+		<action name="search" method="search" class="centroAction">
+			<result name="success" type="tiles">list/centro</result>
+			<result name="input" type="redirect">volverList</result>
+			<result name="error" type="tiles">list/centro</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+
+		<action name="loadPopup" method="loadPopup" class="centroAction">
+			<result name="success">/jsp/centro/popup/loadCentroPopup.jsp</result>
+		</action>
+		<action name="searchPopup" method="searchPopup" class="centroAction">
+			<result name="success">/jsp/centro/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="moreResultsPopup" method="moreResultsPopup" class="centroAction">
+			<result name="success">/jsp/centro/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="selectElementoFromPopup" method="selectElementoFromPopup" class="centroAction">
+			<result name="success">/jsp/centro/popup/detalleCentroSeleccionadoPopup.jsp</result>
+		</action>
+
+		<action name="saveOrUpdate" method="saveOrUpdate" class="centroAction">
+			<result name="success" type="redirect">list</result>
+			<result name="input" type="tiles">edit/centro</result>
+			<result name="error" type="tiles">edit/centro</result>
+		</action>
+		<action name="edit" method="edit" class="centroAction">
+			<result name="success" type="tiles">edit/centro</result>
+		</action>
+		<action name="showMore" method="showMore" class="centroAction">
+			<result name="success" type="tiles">verMas/centro</result>
+			<result name="input" type="tiles">verMas/centro</result>
+		</action>
+		<action name="delete" method="delete" class="centroAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/centro</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="centroAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/centro</result>
+		</action>
+	</package>
+	<package name="configuracionFamilia" namespace="/configuracionFamilia" extends="authenticate-default, json-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="obtenerModelForAngular" method="obtenerModelForAngular" class="configuracionFamiliaAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="obtenerInstalacion" method="obtenerFamiliaInstalacion" class="configuracionFamiliaAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="list" method="list" class="configuracionFamiliaAction">
+			<result name="success" type="tiles">list/configuracionFamilia</result>
+		</action>
+		<action name="volverList" method="volverList" class="configuracionFamiliaAction">
+			<result name="success" type="tiles">list/configuracionFamilia</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="configuracionFamiliaAction">
+			<result name="success">/jsp/configuracionFamilia/paginaList.jsp</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+
+		<action name="search" method="search" class="configuracionFamiliaAction">
+			<result name="success" type="tiles">list/configuracionFamilia</result>
+			<result name="input" type="redirect">volverList</result>
+			<result name="error" type="tiles">list/configuracionFamilia</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="preExportarList" method="preExportarList" class="configuracionFamiliaAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="exportarList_PDF" method="exportarList_PDF" class="configuracionFamiliaAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/configuracionFamilia/listado.jasper</param>
+				<param name="dataSource">list</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">PDF</param>
+			</result>
+		</action>
+		<action name="exportarList_XLS" method="exportarList_XLS" class="configuracionFamiliaAction">
+        	<result type="stream">
+           	 	<param name="contentType">${excelContentType}</param>
+            	<param name="inputName">inputStream</param>
+            	<param name="contentDisposition">${contentDisposition}</param>
+            	<param name="bufferSize">1024</param>
+        	</result>
+    	</action>
+		<action name="exportarShowMore_*" method="exportarShowMore" class="configuracionFamiliaAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/configuracionFamilia/showMore.jasper</param>
+				<param name="dataSource">elemento</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">{1}</param>
+			</result>
+		</action>
+
+		<action name="saveOrUpdate" method="saveOrUpdate" class="configuracionFamiliaAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+			<result name="input" type="tiles">edit/configuracionFamilia</result>
+			<result name="error"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="saveOrUpdateImage" method="saveOrUpdateImage" class="configuracionFamiliaAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+			<result name="error"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+
+		<action name="edit" method="edit" class="configuracionFamiliaAction">
+			<result name="success" type="tiles">editConfiguration/configuracionFamilia</result>
+		</action>
+		<action name="obtenerConfigurationByID" method="obtenerConfigurationByID" class="configuracionFamiliaAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="showMore" method="showMore" class="configuracionFamiliaAction">
+			<result name="success" type="tiles">configurationVerMas/configuracionFamilia</result>
+			<result name="input" type="tiles">configurationVerMas/configuracionFamilia</result>
+		</action>
+		<action name="delete" method="delete" class="configuracionFamiliaAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/configuracionFamilia</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="configuracionFamiliaAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/configuracionFamilia</result>
+		</action>
+	</package>
+	<package name="configuracionesTipo" namespace="/configuracionesTipo" extends="authenticate-default, json-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="obtenerModelForAngular" method="obtenerModelForAngular" class="configuracionesTipoAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="obtenerInstalacion" method="obtenerTipoInstalacion" class="configuracionesTipoAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="list" method="list" class="configuracionesTipoAction">
+			<result name="success" type="tiles">list/configuracionesTipo</result>
+		</action>
+		<action name="volverList" method="volverList" class="configuracionesTipoAction">
+			<result name="success" type="tiles">list/configuracionesTipo</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="configuracionesTipoAction">
+			<result name="success">/jsp/configuracionesTipo/paginaList.jsp</result>
+		</action>
+
+		<action name="search" method="search" class="configuracionesTipoAction">
+			<result name="success" type="tiles">list/configuracionesTipo</result>
+			<result name="input" type="redirect">volverList</result>
+			<result name="error" type="tiles">list/configuracionesTipo</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+				<action name="preExportarList" method="preExportarList" class="configuracionesTipoAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="exportarList_PDF" method="exportarList_PDF" class="configuracionesTipoAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/configuracionesTipo/listado.jasper</param>
+				<param name="dataSource">list</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">PDF</param>
+			</result>
+		</action>
+		<action name="exportarList_XLS" method="exportarList_XLS" class="configuracionesTipoAction">
+        	<result type="stream">
+           	 	<param name="contentType">${excelContentType}</param>
+            	<param name="inputName">inputStream</param>
+            	<param name="contentDisposition">${contentDisposition}</param>
+            	<param name="bufferSize">1024</param>
+        	</result>
+    	</action>
+		<action name="exportarShowMore_*" method="exportarShowMore" class="configuracionesTipoAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/configuracionesTipo/showMore.jasper</param>
+				<param name="dataSource">elemento</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">{1}</param>
+			</result>
+		</action>
+
+		<action name="saveOrUpdate" method="saveOrUpdate" class="configuracionesTipoAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+			<result name="input" type="tiles">edit/configuracionesTipo</result>
+			<result name="error"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="saveOrUpdateImage" method="saveOrUpdateImage" class="configuracionesTipoAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+			<result name="error"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="edit" method="edit" class="configuracionesTipoAction">
+			<result name="success" type="tiles">editConfiguration/configuracionesTipo</result>
+		</action>
+		<action name="obtenerConfigurationByID" method="obtenerConfigurationByID" class="configuracionesTipoAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="showMore" method="showMore" class="configuracionesTipoAction">
+			<result name="success" type="tiles">configurationVerMas/configuracionesTipo</result>
+			<result name="input" type="tiles">configurationVerMas/configuracionesTipo</result>
+		</action>
+		<action name="delete" method="delete" class="configuracionesTipoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/configuracionesTipo</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="configuracionesTipoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/configuracionesTipo</result>
+		</action>
+		<action name="goToSolicitarCreaccion" method="goToSolicitarCreaccion" class="configuracionesTipoAction">
+			<result name="success" type="tiles">solicitud/configuracionesTipo</result>
+			<result name="error" type="tiles">solicitud/configuracionesTipo</result>
+		</action>
+		<action name="solicitarCreaccion" method="solicitarCreaccion" class="configuracionesTipoAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+			<result name="error" type="tiles">solicitud/configuracionesTipo</result>
+		</action>
+	</package>
+	<package name="configuracionParametroFuncional" namespace="/configuracionParametroFuncional" extends="authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="list" method="list" class="configuracionParametroFuncionalAction">
+			<result name="success" type="tiles">list/configuracionParametroFuncional</result>
+		</action>
+		<action name="volverList" method="volverList" class="configuracionParametroFuncionalAction">
+			<result name="success" type="tiles">list/configuracionParametroFuncional</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="configuracionParametroFuncionalAction">
+			<result name="success">/jsp/configuracionParametroFuncional/paginaList.jsp</result>
+		</action>
+		<action name="loadPopup" method="loadPopup" class="configuracionParametroFuncionalAction">
+			<result name="success">/jsp/configuracionParametroFuncional/popup/loadConfiguracionParametroFuncionalnPopup.jsp</result>
+		</action>
+		<action name="searchPopup" method="searchPopup" class="configuracionParametroFuncionalAction">
+			<result name="success">/jsp/configuracionParametroFuncional/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="moreResultsPopup" method="moreResultsPopup" class="configuracionParametroFuncionalAction">
+			<result name="success">/jsp/configuracionParametroFuncional/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="selectElementoFromPopup" method="selectElementoFromPopup" class="configuracionParametroFuncionalAction">
+			<result name="success">/jsp/configuracionParametroFuncional/popup/detalleConfiguracionParametroFuncionalPopup.jsp</result>
+		</action>
+		<action name="saveOrUpdate" method="saveOrUpdate" class="configuracionParametroFuncionalAction">
+			<result name="success" type="redirect">list</result>
+			<result name="input" type="tiles">edit/configuracionParametroFuncional</result>
+			<result name="error" type="tiles">edit/configuracionParametroFuncional</result>
+		</action>
+		<action name="edit" method="edit" class="configuracionParametroFuncionalAction">
+			<result name="success" type="tiles">edit/configuracionParametroFuncional</result>
+		</action>
+		<action name="showMore" method="showMore" class="configuracionParametroFuncionalAction">
+			<result name="success" type="tiles">verMas/configuracionParametroFuncional</result>
+			<result name="input" type="tiles">verMas/configuracionParametroFuncional</result>
+		</action>
+		<action name="delete" method="delete" class="configuracionParametroFuncionalAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/configuracionParametroFuncional</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="configuracionParametroFuncionalAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/configuracionParametroFuncional</result>
+		</action>
+	</package>
+	<package name="elemento" namespace="/elemento" extends="authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="list" method="list" class="elementoAction">
+			<result name="success" type="tiles">list/elemento</result>
+		</action>
+		<action name="volverList" method="volverList" class="elementoAction">
+			<result name="success" type="tiles">list/elemento</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="elementoAction">
+			<result name="success">/jsp/elemento/paginaList.jsp</result>
+		</action>
+
+		<action name="saveOrUpdate" method="saveOrUpdate" class="elementoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="input" type="tiles">edit/elemento</result>
+			<result name="error" type="tiles">edit/elemento</result>
+		</action>
+		<action name="edit" method="edit" class="elementoAction">
+			<result name="success" type="tiles">edit/elemento</result>
+		</action>
+		<action name="showMore" method="showMore" class="elementoAction">
+			<result name="success" type="tiles">verMas/elemento</result>
+			<result name="input" type="tiles">verMas/elemento</result>
+		</action>
+		<action name="delete" method="delete" class="elementoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/elemento</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="elementoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/elemento</result>
+		</action>
+	</package>
+	<package name="emplazamiento" namespace="/emplazamiento" extends="authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="list" method="list" class="emplazamientoAction">
+			<result name="success" type="tiles">list/emplazamiento</result>
+		</action>
+		<action name="volverList" method="volverList" class="emplazamientoAction">
+			<result name="success" type="tiles">list/emplazamiento</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="emplazamientoAction">
+			<result name="success">/jsp/emplazamiento/paginaList.jsp</result>
+		</action>
+		<action name="search" method="search" class="emplazamientoAction">
+			<result name="success" type="tiles">list/emplazamiento</result>
+			<result name="input" type="redirect">volverList</result>
+			<result name="error" type="tiles">list/emplazamiento</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+
+		<action name="loadPopup" method="loadPopup" class="emplazamientoAction">
+			<result name="success">/jsp/emplazamiento/popup/loadEmplazamientoPopup.jsp</result>
+		</action>
+		<action name="searchPopup" method="searchPopup" class="emplazamientoAction">
+			<result name="success">/jsp/emplazamiento/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="moreResultsPopup" method="moreResultsPopup" class="emplazamientoAction">
+			<result name="success">/jsp/emplazamiento/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="selectElementoFromPopup" method="selectElementoFromPopup" class="emplazamientoAction">
+			<result name="success">/jsp/emplazamiento/popup/detalleEmplazamientoSeleccionadoPopup.jsp</result>
+		</action>
+		<action name="preExportarList" method="preExportarList" class="emplazamientoAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="exportarList_PDF" method="exportarList_PDF" class="emplazamientoAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/emplazamiento/listado.jasper</param>
+				<param name="dataSource">list</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">PDF</param>
+			</result>
+		</action>
+		<action name="exportarList_XLS" method="exportarList_XLS" class="emplazamientoAction">
+        	<result type="stream">
+           	 	<param name="contentType">${excelContentType}</param>
+            	<param name="inputName">inputStream</param>
+            	<param name="contentDisposition">${contentDisposition}</param>
+            	<param name="bufferSize">1024</param>
+        	</result>
+    	</action>
+		<action name="exportarShowMore_*" method="exportarShowMore" class="emplazamientoAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/emplazamiento/showMore.jasper</param>
+				<param name="dataSource">elemento</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">{1}</param>
+			</result>
+		</action>
+		<action name="saveOrUpdate" method="saveOrUpdate" class="emplazamientoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="input" type="tiles">edit/emplazamiento</result>
+			<result name="error" type="tiles">edit/emplazamiento</result>
+		</action>
+		<action name="edit" method="edit" class="emplazamientoAction">
+			<result name="success" type="tiles">edit/emplazamiento</result>
+		</action>
+		<action name="showMore" method="showMore" class="emplazamientoAction">
+			<result name="success" type="tiles">verMas/emplazamiento</result>
+			<result name="input" type="tiles">verMas/emplazamiento</result>
+		</action>
+		<action name="delete" method="delete" class="emplazamientoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/emplazamiento</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="emplazamientoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/emplazamiento</result>
+		</action>
+	</package>
+	<package name="estadoElemento" namespace="/estadoElemento" extends="authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="list" method="list" class="estadoElementoAction">
+			<result name="success" type="tiles">list/estadoElemento</result>
+		</action>
+		<action name="volverList" method="volverList" class="estadoElementoAction">
+			<result name="success" type="tiles">list/estadoElemento</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="estadoElementoAction">
+			<result name="success">/jsp/estadoElemento/paginaList.jsp</result>
+		</action>
+		<action name="search" method="search" class="estadoElementoAction">
+			<result name="success" type="tiles">list/estadoElemento</result>
+			<result name="input" type="redirect">volverList</result>
+			<result name="error" type="tiles">list/estadoElemento</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="preExportarList" method="preExportarList" class="estadoElementoAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="exportarList_PDF" method="exportarList_PDF" class="estadoElementoAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/estado/listado.jasper</param>
+				<param name="dataSource">list</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">PDF</param>
+			</result>
+		</action>
+		<action name="exportarList_XLS" method="exportarList_XLS" class="estadoElementoAction">
+        	<result type="stream">
+           	 	<param name="contentType">${excelContentType}</param>
+            	<param name="inputName">inputStream</param>
+            	<param name="contentDisposition">${contentDisposition}</param>
+            	<param name="bufferSize">1024</param>
+        	</result>
+    	</action>
+		<action name="exportarShowMore_*" method="exportarShowMore" class="estadoElementoAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/common/showMore.jasper</param>
+				<param name="dataSource">elemento</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">{1}</param>
+			</result>
+		</action>
+		<action name="saveOrUpdate" method="saveOrUpdate" class="estadoElementoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="input" type="tiles">edit/estadoElemento</result>
+			<result name="error" type="tiles">edit/estadoElemento</result>
+		</action>
+		<action name="edit" method="edit" class="estadoElementoAction">
+			<result name="success" type="tiles">edit/estadoElemento</result>
+		</action>
+		<action name="showMore" method="showMore" class="estadoElementoAction">
+			<result name="success" type="tiles">verMas/estadoElemento</result>
+			<result name="input" type="tiles">verMas/estadoElemento</result>
+		</action>
+		<action name="delete" method="delete" class="estadoElementoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/estadoElemento</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="estadoElementoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/estadoElemento</result>
+		</action>
+	</package>
+	<package name="estadoInstalacion" namespace="/estadoInstalacion" extends="authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="list" method="list" class="estadoInstalacionAction">
+			<result name="success" type="tiles">list/estadoInstalacion</result>
+		</action>
+		<action name="volverList" method="volverList" class="estadoInstalacionAction">
+			<result name="success" type="tiles">list/estadoInstalacion</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="estadoInstalacionAction">
+			<result name="success">/jsp/estadoInstalacion/paginaList.jsp</result>
+		</action>
+		<action name="search" method="search" class="estadoInstalacionAction">
+			<result name="success" type="tiles">list/estadoInstalacion</result>
+			<result name="input" type="redirect">volverList</result>
+			<result name="error" type="tiles">list/estadoInstalacion</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="preExportarList" method="preExportarList" class="estadoInstalacionAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="exportarList_PDF" method="exportarList_PDF" class="estadoInstalacionAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/estado/listado.jasper</param>
+				<param name="dataSource">list</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">PDF</param>
+			</result>
+		</action>
+		<action name="exportarList_XLS" method="exportarList_XLS" class="estadoInstalacionAction">
+        	<result type="stream">
+           	 	<param name="contentType">${excelContentType}</param>
+            	<param name="inputName">inputStream</param>
+            	<param name="contentDisposition">${contentDisposition}</param>
+            	<param name="bufferSize">1024</param>
+        	</result>
+    	</action>
+		<action name="exportarShowMore_*" method="exportarShowMore" class="estadoInstalacionAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/common/showMore.jasper</param>
+				<param name="dataSource">elemento</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">{1}</param>
+			</result>
+		</action>
+		<action name="saveOrUpdate" method="saveOrUpdate" class="estadoInstalacionAction">
+			<result name="success" type="redirect">list</result>
+			<result name="input" type="tiles">edit/estadoInstalacion</result>
+			<result name="error" type="tiles">edit/estadoInstalacion</result>
+		</action>
+		<action name="edit" method="edit" class="estadoInstalacionAction">
+			<result name="success" type="tiles">edit/estadoInstalacion</result>
+		</action>
+		<action name="showMore" method="showMore" class="estadoInstalacionAction">
+			<result name="success" type="tiles">verMas/estadoInstalacion</result>
+			<result name="input" type="tiles">verMas/estadoInstalacion</result>
+		</action>
+		<action name="delete" method="delete" class="estadoInstalacionAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/estadoInstalacion</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="estadoInstalacionAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/estadoInstalacion</result>
+		</action>
+	</package>
+	<package name="familiaElemento" namespace="/familiaElemento" extends="authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="list" method="list" class="familiaElementoAction">
+			<result name="success" type="tiles">list/familiaElemento</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="search" method="search" class="familiaElementoAction">
+			<result name="success" type="tiles">list/familiaElemento</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="volverList" method="volverList" class="familiaElementoAction">
+			<result name="success" type="tiles">list/familiaElemento</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="familiaElementoAction">
+			<result name="success">/jsp/familiaElemento/paginaList.jsp</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="loadPopup" method="loadPopup" class="familiaElementoAction">
+			<result name="success">/jsp/familiaElemento/popup/loadFamiliaElementoPopup.jsp</result>
+		</action>
+		<action name="searchPopup" method="searchPopup" class="familiaElementoAction">
+			<result name="success">/jsp/familiaElemento/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="moreResultsPopup" method="moreResultsPopup" class="familiaElementoAction">
+			<result name="success">/jsp/familiaElemento/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="selectElementoFromPopup" method="selectElementoFromPopup" class="familiaElementoAction">
+			<result name="success">/jsp/familiaElemento/popup/detalleFamiliaElementoSeleccionadaPopup.jsp</result>
+		</action>
+		<action name="preExportarList" method="preExportarList" class="familiaElementoAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="exportarList_PDF" method="exportarList_PDF" class="familiaElementoAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/familiaElemento/listado.jasper</param>
+				<param name="dataSource">list</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">PDF</param>
+			</result>
+		</action>
+		<action name="exportarList_XLS" method="exportarList_XLS" class="familiaElementoAction">
+        	<result type="stream">
+           	 	<param name="contentType">${excelContentType}</param>
+            	<param name="inputName">inputStream</param>
+            	<param name="contentDisposition">${contentDisposition}</param>
+            	<param name="bufferSize">1024</param>
+        	</result>
+    	</action>
+		<action name="exportarShowMore_*" method="exportarShowMore" class="familiaElementoAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/common/showMore.jasper</param>
+				<param name="dataSource">elemento</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">{1}</param>
+			</result>
+		</action>
+		<action name="saveOrUpdate" method="saveOrUpdate" class="familiaElementoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="input" type="tiles">edit/familiaElemento</result>
+			<result name="error" type="tiles">edit/familiaElemento</result>
+		</action>
+		<action name="edit" method="edit" class="familiaElementoAction">
+			<result name="success" type="tiles">edit/familiaElemento</result>
+		</action>
+		<action name="showMore" method="showMore" class="familiaElementoAction">
+			<result name="success" type="tiles">verMas/familiaElemento</result>
+			<result name="input" type="tiles">verMas/familiaElemento</result>
+		</action>
+		<action name="delete" method="delete" class="familiaElementoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/familiaElemento</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="familiaElementoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/familiaElemento</result>
+		</action>
+	</package>
+	<package name="familiaInstalacion" namespace="/familiaInstalacion" extends="authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="list" method="list" class="familiaInstalacionAction">
+			<result name="success" type="tiles">list/familiaInstalacion</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="volverList" method="volverList" class="familiaInstalacionAction">
+			<result name="success" type="tiles">list/familiaInstalacion</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="familiaInstalacionAction">
+			<result name="success">/jsp/familiaInstalacion/paginaList.jsp</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="search" method="search" class="familiaInstalacionAction">
+			<result name="success" type="tiles">list/familiaInstalacion</result>
+			<result name="input" type="redirect">volverList</result>
+			<result name="error" type="tiles">list/familiaInstalacion</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="loadPopup" method="loadPopup" class="familiaInstalacionAction">
+			<result name="success">/jsp/familiaInstalacion/popup/loadFamiliaInstalacionPopup.jsp</result>
+		</action>
+		<action name="loadPopupBusqueda" method="loadPopup" class="familiaInstalacionAction">
+			<result name="success">/jsp/familiaInstalacion/popup/loadFamiliaInstalacionPopupBusqueda.jsp</result>
+		</action>
+		<action name="searchPopup" method="searchPopup" class="familiaInstalacionAction">
+			<result name="success">/jsp/familiaInstalacion/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="moreResultsPopup" method="moreResultsPopup" class="familiaInstalacionAction">
+			<result name="success">/jsp/familiaInstalacion/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="selectElementoFromPopup" method="selectElementoFromPopup" class="familiaInstalacionAction">
+			<result name="success">/jsp/familiaInstalacion/popup/detalleFamiliaInstalacionSeleccionadaPopup.jsp</result>
+		</action>
+		<action name="selectElementoFromPopupBusqueda" method="selectElementoFromPopup" class="familiaInstalacionAction">
+			<result name="success">/jsp/familiaInstalacion/popup/detalleFamiliaInstalacionSeleccionadaPopupBusqueda.jsp</result>
+		</action>
+		<action name="preExportarList" method="preExportarList" class="familiaInstalacionAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="exportarList_PDF" method="exportarList_PDF" class="familiaInstalacionAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/familiaInstalacion/listado.jasper</param>
+				<param name="dataSource">list</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">PDF</param>
+			</result>
+		</action>
+		<action name="exportarList_XLS" method="exportarList_XLS" class="familiaInstalacionAction">
+        	<result type="stream">
+           	 	<param name="contentType">${excelContentType}</param>
+            	<param name="inputName">inputStream</param>
+            	<param name="contentDisposition">${contentDisposition}</param>
+            	<param name="bufferSize">1024</param>
+        	</result>
+    	</action>
+		<action name="exportarShowMore_*" method="exportarShowMore" class="familiaInstalacionAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/familiaInstalacion/showMore.jasper</param>
+				<param name="dataSource">elemento</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">{1}</param>
+			</result>
+		</action>
+		<action name="saveOrUpdate" method="saveOrUpdate" class="familiaInstalacionAction">
+			<result name="success" type="redirect">list</result>
+			<result name="input" type="tiles">edit/familiaInstalacion</result>
+			<result name="error" type="tiles">edit/familiaInstalacion</result>
+		</action>
+		<action name="edit" method="edit" class="familiaInstalacionAction">
+			<result name="success" type="tiles">edit/familiaInstalacion</result>
+		</action>
+		<action name="showMore" method="showMore" class="familiaInstalacionAction">
+			<result name="success" type="tiles">verMas/familiaInstalacion</result>
+			<result name="input" type="tiles">verMas/familiaInstalacion</result>
+		</action>
+		<action name="delete" method="delete" class="familiaInstalacionAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/familiaInstalacion</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="familiaInstalacionAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/familiaInstalacion</result>
+		</action>
+	</package>
+	<package name="localizacion" namespace="/localizacion" extends="authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="list" method="list" class="localizacionAction">
+			<result name="success" type="tiles">list/localizacion</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="volverList" method="volverList" class="localizacionAction">
+			<result name="success" type="tiles">list/localizacion</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="localizacionAction">
+			<result name="success">/jsp/localizacion/paginaList.jsp</result>
+		</action>
+		<action name="search" method="search" class="localizacionAction">
+			<result name="success" type="tiles">list/localizacion</result>
+			<result name="input" type="redirect">volverList</result>
+			<result name="error" type="tiles">list/localizacion</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="loadPopup" method="loadPopup" class="localizacionAction">
+			<result name="success">/jsp/localizacion/popup/loadLocalizacionPopup.jsp</result>
+		</action>
+		<action name="searchPopup" method="searchPopup" class="localizacionAction">
+			<result name="success">/jsp/localizacion/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="moreResultsPopup" method="moreResultsPopup" class="localizacionAction">
+			<result name="success">/jsp/localizacion/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="selectElementoFromPopup" method="selectElementoFromPopup" class="localizacionAction">
+			<result name="success">/jsp/localizacion/popup/detalleLocalizacionSeleccionadaPopup.jsp</result>
+		</action>
+
+		<action name="saveOrUpdate" method="saveOrUpdate" class="localizacionAction">
+			<result name="success" type="redirect">list</result>
+			<result name="input" type="tiles">edit/localizacion</result>
+			<result name="error" type="tiles">edit/localizacion</result>
+		</action>
+		<action name="preExportarList" method="preExportarList" class="localizacionAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="exportarList_PDF" method="exportarList_PDF" class="localizacionAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/localizacion/listado.jasper</param>
+				<param name="wrapField">false</param>
+				<param name="dataSource">list</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">PDF</param>
+			</result>
+		</action>
+		<action name="exportarList_XLS" method="exportarList_XLS" class="localizacionAction">
+        	<result type="stream">
+           	 	<param name="contentType">${excelContentType}</param>
+            	<param name="inputName">inputStream</param>
+               	<param name="contentDisposition">${contentDisposition}</param>
+            	<param name="bufferSize">1024</param>
+        	</result>
+    	</action>
+		<action name="exportarShowMore_*" method="exportarShowMore" class="localizacionAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/localizacion/showMore.jasper</param>
+				<param name="wrapField">false</param>
+				<param name="dataSource">elemento</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">{1}</param>
+			</result>
+		</action>
+		<action name="edit" method="edit" class="localizacionAction">
+			<result name="success" type="tiles">edit/localizacion</result>
+		</action>
+		<action name="showMore" method="showMore" class="localizacionAction">
+			<result name="success" type="tiles">verMas/localizacion</result>
+			<result name="input" type="tiles">verMas/localizacion</result>
+		</action>
+		<action name="delete" method="delete" class="localizacionAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/localizacion</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="localizacionAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/localizacion</result>
+		</action>
+	</package>
+	<package name="parametroFuncional" namespace="/parametroFuncional" extends="authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="list" method="list" class="parametroFuncionalAction">
+			<result name="success" type="tiles">list/parametroFuncional</result>
+		</action>
+		<action name="volverList" method="volverList" class="parametroFuncionalAction">
+			<result name="success" type="tiles">list/parametroFuncional</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="parametroFuncionalAction">
+			<result name="success">/jsp/parametroFuncional/paginaList.jsp</result>
+		</action>
+		<action name="search" method="search" class="parametroFuncionalAction">
+			<result name="success" type="tiles">list/parametroFuncional</result>
+			<result name="input" type="redirect">volverList</result>
+			<result name="error" type="tiles">list/parametroFuncional</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="loadPopup" method="loadPopup" class="parametroFuncionalAction">
+			<result name="success">/jsp/parametroFuncional/popup/loadParametroFuncionalPopup.jsp</result>
+		</action>
+		<action name="searchPopup" method="searchPopup" class="parametroFuncionalAction">
+			<result name="success">/jsp/parametroFuncional/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="moreResultsPopup" method="moreResultsPopup" class="parametroFuncionalAction">
+			<result name="success">/jsp/parametroFuncional/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="selectElementoFromPopup" method="selectElementoFromPopup" class="parametroFuncionalAction">
+			<result name="success">/jsp/parametroFuncional/popup/detalleParametroFuncionalSeleccionadoPopup.jsp</result>
+		</action>
+		<action name="preExportarList" method="preExportarList" class="parametroFuncionalAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="exportarList_PDF" method="exportarList_PDF" class="parametroFuncionalAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/parametroFuncional/listado.jasper</param>
+				<param name="wrapField">false</param>
+				<param name="dataSource">list</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">PDF</param>
+			</result>
+		</action>
+		<action name="exportarList_XLS" method="exportarList_XLS" class="parametroFuncionalAction">
+        	<result type="stream">
+           	 	<param name="contentType">${excelContentType}</param>
+            	<param name="inputName">inputStream</param>
+            	<param name="contentDisposition">${contentDisposition}</param>
+            	<param name="bufferSize">1024</param>
+        	</result>
+    	</action>
+		<action name="exportarShowMore_*" method="exportarShowMore" class="parametroFuncionalAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/parametroFuncional/showMore.jasper</param>
+				<param name="wrapField">false</param>
+				<param name="dataSource">elemento</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">{1}</param>
+			</result>
+		</action>
+		<action name="saveOrUpdate" method="saveOrUpdate" class="parametroFuncionalAction">
+			<result name="success" type="redirect">list</result>
+			<result name="input" type="tiles">edit/parametroFuncional</result>
+			<result name="error" type="tiles">edit/parametroFuncional</result>
+		</action>
+		<action name="edit" method="edit" class="parametroFuncionalAction">
+			<result name="success" type="tiles">edit/parametroFuncional</result>
+		</action>
+		<action name="showMore" method="showMore" class="parametroFuncionalAction">
+			<result name="success" type="tiles">verMas/parametroFuncional</result>
+			<result name="input" type="tiles">verMas/parametroFuncional</result>
+		</action>
+		<action name="delete" method="delete" class="parametroFuncionalAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/parametroFuncional</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="parametroFuncionalAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/parametroFuncional</result>
+		</action>
+	</package>
+	<package name="propietarioActivo" namespace="/propietarioActivo" extends="authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="list" method="list" class="propietarioActivoAction">
+			<result name="success" type="tiles">list/propietarioActivo</result>
+		</action>
+		<action name="volverList" method="volverList" class="propietarioActivoAction">
+			<result name="success" type="tiles">list/propietarioActivo</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="propietarioActivoAction">
+			<result name="success">/jsp/propietarioActivo/paginaList.jsp</result>
+		</action>
+		<action name="search" method="search" class="propietarioActivoAction">
+			<result name="success" type="tiles">list/propietarioActivo</result>
+			<result name="input" type="redirect">volverList</result>
+			<result name="error" type="tiles">list/propietarioActivo</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="preExportarList" method="preExportarList" class="propietarioActivoAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="exportarList_PDF" method="exportarList_PDF" class="propietarioActivoAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/common/listado.jasper</param>
+				<param name="dataSource">list</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">PDF</param>
+			</result>
+		</action>
+		<action name="exportarList_XLS" method="exportarList_XLS" class="propietarioActivoAction">
+        	<result type="stream">
+           	 	<param name="contentType">${excelContentType}</param>
+            	<param name="inputName">inputStream</param>
+            	<param name="contentDisposition">${contentDisposition}</param>
+            	<param name="bufferSize">1024</param>
+        	</result>
+    	</action>
+		<action name="exportarShowMore_*" method="exportarShowMore" class="propietarioActivoAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/common/showMore.jasper</param>
+				<param name="dataSource">elemento</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">{1}</param>
+			</result>
+		</action>
+		<action name="saveOrUpdate" method="saveOrUpdate" class="propietarioActivoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="input" type="tiles">edit/propietarioActivo</result>
+			<result name="error" type="tiles">edit/propietarioActivo</result>
+		</action>
+		<action name="edit" method="edit" class="propietarioActivoAction">
+			<result name="success" type="tiles">edit/propietarioActivo</result>
+		</action>
+		<action name="showMore" method="showMore" class="propietarioActivoAction">
+			<result name="success" type="tiles">verMas/propietarioActivo</result>
+			<result name="input" type="tiles">verMas/propietarioActivo</result>
+		</action>
+		<action name="delete" method="delete" class="propietarioActivoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/propietarioActivo</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="propietarioActivoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/propietarioActivo</result>
+		</action>
+	</package>
+	<package name="region" namespace="/region" extends="authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="list" method="list" class="regionAction">
+			<result name="success" type="tiles">list/region</result>
+		</action>
+		<action name="volverList" method="volverList" class="regionAction">
+			<result name="success" type="tiles">list/region</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="regionAction">
+			<result name="success">/jsp/region/paginaList.jsp</result>
+		</action>
+		<action name="search" method="search" class="regionAction">
+			<result name="success" type="tiles">list/region</result>
+			<result name="input" type="redirect">volverList</result>
+			<result name="error" type="tiles">list/region</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+
+		<action name="loadPopup" method="loadPopup" class="regionAction">
+			<result name="success">/jsp/region/popup/loadRegionPopup.jsp</result>
+		</action>
+		<action name="searchPopup" method="searchPopup" class="regionAction">
+			<result name="success">/jsp/region/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="moreResultsPopup" method="moreResultsPopup" class="regionAction">
+			<result name="success">/jsp/region/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="selectElementoFromPopup" method="selectElementoFromPopup" class="regionAction">
+			<result name="success">/jsp/region/popup/detalleRegionSeleccionadaPopup.jsp</result>
+		</action>
+
+		<action name="preExportarList" method="preExportarList" class="regionAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="exportarList_PDF" method="exportarList_PDF" class="regionAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/common/listado.jasper</param>
+				<param name="dataSource">list</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">PDF</param>
+			</result>
+		</action>
+		<action name="exportarList_XLS" method="exportarList_XLS" class="regionAction">
+        	<result type="stream">
+           	 	<param name="contentType">${excelContentType}</param>
+            	<param name="inputName">inputStream</param>
+            	<param name="contentDisposition">${contentDisposition}</param>
+            	<param name="bufferSize">1024</param>
+        	</result>
+    	</action>
+		<action name="exportarShowMore_*" method="exportarShowMore" class="regionAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/common/showMore.jasper</param>
+				<param name="dataSource">elemento</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">{1}</param>
+			</result>
+		</action>
+
+
+
+
+		<action name="saveOrUpdate" method="saveOrUpdate" class="regionAction">
+			<result name="success" type="redirect">list</result>
+			<result name="input" type="tiles">edit/region</result>
+			<result name="error" type="tiles">edit/region</result>
+		</action>
+		<action name="edit" method="edit" class="regionAction">
+			<result name="success" type="tiles">edit/region</result>
+		</action>
+		<action name="showMore" method="showMore" class="regionAction">
+			<result name="success" type="tiles">verMas/region</result>
+			<result name="input" type="tiles">verMas/region</result>
+		</action>
+		<action name="delete" method="delete" class="regionAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/region</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="regionAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/region</result>
+		</action>
+	</package>
+	<package name="responsableMantenimiento" namespace="/responsableMantenimiento" extends="authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="list" method="list" class="responsableMantenimientoAction">
+			<result name="success" type="tiles">list/responsableMantenimiento</result>
+		</action>
+		<action name="volverList" method="volverList" class="responsableMantenimientoAction">
+			<result name="success" type="tiles">list/responsableMantenimiento</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="responsableMantenimientoAction">
+			<result name="success">/jsp/responsableMantenimiento/paginaList.jsp</result>
+		</action>
+		<action name="search" method="search" class="responsableMantenimientoAction">
+			<result name="success" type="tiles">list/responsableMantenimiento</result>
+			<result name="input" type="redirect">volverList</result>
+			<result name="error" type="tiles">list/responsableMantenimiento</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="preExportarList" method="preExportarList" class="responsableMantenimientoAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="exportarList_PDF" method="exportarList_PDF" class="responsableMantenimientoAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/common/listado.jasper</param>
+				<param name="dataSource">list</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">PDF</param>
+			</result>
+		</action>
+		<action name="exportarList_XLS" method="exportarList_XLS" class="responsableMantenimientoAction">
+        	<result type="stream">
+           	 	<param name="contentType">${excelContentType}</param>
+            	<param name="inputName">inputStream</param>
+            	<param name="contentDisposition">${contentDisposition}</param>
+            	<param name="bufferSize">1024</param>
+        	</result>
+    	</action>
+		<action name="exportarShowMore_*" method="exportarShowMore" class="responsableMantenimientoAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/common/showMore.jasper</param>
+				<param name="dataSource">elemento</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">{1}</param>
+			</result>
+		</action>
+		<action name="saveOrUpdate" method="saveOrUpdate" class="responsableMantenimientoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="input" type="tiles">edit/responsableMantenimiento</result>
+			<result name="error" type="tiles">edit/responsableMantenimiento</result>
+		</action>
+		<action name="edit" method="edit" class="responsableMantenimientoAction">
+			<result name="success" type="tiles">edit/responsableMantenimiento</result>
+		</action>
+		<action name="showMore" method="showMore" class="responsableMantenimientoAction">
+			<result name="success" type="tiles">verMas/responsableMantenimiento</result>
+			<result name="input" type="tiles">verMas/responsableMantenimiento</result>
+		</action>
+		<action name="delete" method="delete" class="responsableMantenimientoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/responsableMantenimiento</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="responsableMantenimientoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/responsableMantenimiento</result>
+		</action>
+	</package>
+	<package name="sector" namespace="/sector" extends="authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="list" method="list" class="sectorAction">
+			<result name="success" type="tiles">list/sector</result>
+		</action>
+		<action name="volverList" method="volverList" class="sectorAction">
+			<result name="success" type="tiles">list/sector</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="sectorAction">
+			<result name="success">/jsp/sector/paginaList.jsp</result>
+		</action>
+		<action name="search" method="search" class="sectorAction">
+			<result name="success" type="tiles">list/sector</result>
+			<result name="input" type="redirect">volverList</result>
+			<result name="error" type="tiles">list/sector</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="loadPopup" method="loadPopup" class="sectorAction">
+			<result name="success">/jsp/sector/popup/loadSectorPopup.jsp</result>
+		</action>
+		<action name="searchPopup" method="searchPopup" class="sectorAction">
+			<result name="success">/jsp/sector/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="moreResultsPopup" method="moreResultsPopup" class="sectorAction">
+			<result name="success">/jsp/sector/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="selectElementoFromPopup" method="selectElementoFromPopup" class="sectorAction">
+			<result name="success">/jsp/sector/popup/detalleSectorSeleccionadaPopup.jsp</result>
+		</action>
+		<action name="preExportarList" method="preExportarList" class="sectorAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="exportarList_PDF" method="exportarList_PDF" class="sectorAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/common/listado.jasper</param>
+				<param name="dataSource">list</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">PDF</param>
+			</result>
+		</action>
+		<action name="exportarList_XLS" method="exportarList_XLS" class="sectorAction">
+        	<result type="stream">
+           	 	<param name="contentType">${excelContentType}</param>
+            	<param name="inputName">inputStream</param>
+            	<param name="contentDisposition">${contentDisposition}</param>
+            	<param name="bufferSize">1024</param>
+        	</result>
+    	</action>
+		<action name="exportarShowMore_*" method="exportarShowMore" class="sectorAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/common/showMore.jasper</param>
+				<param name="dataSource">elemento</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">{1}</param>
+			</result>
+		</action>
+		<action name="saveOrUpdate" method="saveOrUpdate" class="sectorAction">
+			<result name="success" type="redirect">list</result>
+			<result name="input" type="tiles">edit/sector</result>
+			<result name="error" type="tiles">edit/sector</result>
+		</action>
+		<action name="edit" method="edit" class="sectorAction">
+			<result name="success" type="tiles">edit/sector</result>
+		</action>
+		<action name="showMore" method="showMore" class="sectorAction">
+			<result name="success" type="tiles">verMas/sector</result>
+			<result name="input" type="tiles">verMas/sector</result>
+		</action>
+		<action name="delete" method="delete" class="sectorAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/sector</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="sectorAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/sector</result>
+		</action>
+	</package>
+	<package name="tipoEmplazamiento" namespace="/tipoEmplazamiento" extends="authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="list" method="list" class="tipoEmplazamientoAction">
+			<result name="success" type="tiles">list/tipoEmplazamiento</result>
+		</action>
+		<action name="volverList" method="volverList" class="tipoEmplazamientoAction">
+			<result name="success" type="tiles">list/tipoEmplazamiento</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="tipoEmplazamientoAction">
+			<result name="success">/jsp/tipoEmplazamiento/paginaList.jsp</result>
+		</action>
+
+		<action name="search" method="search" class="tipoEmplazamientoAction">
+			<result name="success" type="tiles">list/tipoEmplazamiento</result>
+			<result name="input" type="redirect">volverList</result>
+			<result name="error" type="tiles">list/tipoEmplazamiento</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+
+		<action name="loadPopup" method="loadPopup" class="tipoEmplazamientoAction">
+			<result name="success">/jsp/tipoEmplazamiento/popup/loadTipoEmplazamientoPopup.jsp</result>
+		</action>
+		<action name="searchPopup" method="searchPopup" class="tipoEmplazamientoAction">
+			<result name="success">/jsp/tipoEmplazamiento/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="moreResultsPopup" method="moreResultsPopup" class="tipoEmplazamientoAction">
+			<result name="success">/jsp/tipoEmplazamiento/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="selectElementoFromPopup" method="selectElementoFromPopup" class="tipoEmplazamientoAction">
+			<result name="success">/jsp/tipoEmplazamiento/popup/detalleTipoEmplazamientoSeleccionadoPopup.jsp</result>
+		</action>
+		<action name="preExportarList" method="preExportarList" class="tipoEmplazamientoAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="exportarList_PDF" method="exportarList_PDF" class="tipoEmplazamientoAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/tipoEmplazamiento/listado.jasper</param>
+				<param name="dataSource">list</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">PDF</param>
+			</result>
+		</action>
+		<action name="exportarList_XLS" method="exportarList_XLS" class="tipoEmplazamientoAction">
+        	<result type="stream">
+           	 	<param name="contentType">${excelContentType}</param>
+            	<param name="inputName">inputStream</param>
+            	<param name="contentDisposition">${contentDisposition}</param>
+            	<param name="bufferSize">1024</param>
+        	</result>
+    	</action>
+		<action name="exportarShowMore_*" method="exportarShowMore" class="tipoEmplazamientoAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/common/showMore.jasper</param>
+				<param name="dataSource">elemento</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">{1}</param>
+			</result>
+		</action>
+		<action name="saveOrUpdate" method="saveOrUpdate" class="tipoEmplazamientoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="input" type="tiles">edit/tipoEmplazamiento</result>
+			<result name="error" type="tiles">edit/tipoEmplazamiento</result>
+		</action>
+		<action name="edit" method="edit" class="tipoEmplazamientoAction">
+			<result name="success" type="tiles">edit/tipoEmplazamiento</result>
+		</action>
+		<action name="showMore" method="showMore" class="tipoEmplazamientoAction">
+			<result name="success" type="tiles">verMas/tipoEmplazamiento</result>
+			<result name="input" type="tiles">verMas/tipoEmplazamiento</result>
+		</action>
+		<action name="delete" method="delete" class="tipoEmplazamientoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/tipoEmplazamiento</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="tipoEmplazamientoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/tipoEmplazamiento</result>
+		</action>
+	</package>
+	<package name="tipoInstalacion" namespace="/tipoInstalacion" extends="authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="list" method="list" class="tipoInstalacionAction">
+			<result name="success" type="tiles">list/tipoInstalacion</result>
+		</action>
+		<action name="volverList" method="volverList" class="tipoInstalacionAction">
+			<result name="success" type="tiles">list/tipoInstalacion</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="tipoInstalacionAction">
+			<result name="success">/jsp/tipoInstalacion/paginaList.jsp</result>
+		</action>
+		<action name="search" method="search" class="tipoInstalacionAction">
+			<result name="success" type="tiles">list/tipoInstalacion</result>
+			<result name="input" type="redirect">volverList</result>
+			<result name="error" type="tiles">list/tipoInstalacion</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+
+		<action name="exportarList_PDF" method="exportarList_PDF" class="tipoInstalacionAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/tipoInstalacion/listado.jasper</param>
+				<param name="dataSource">list</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">PDF</param>
+			</result>
+		</action>
+		<action name="exportarList_XLS" method="exportarList_XLS" class="tipoInstalacionAction">
+        	<result type="stream">
+           	 	<param name="contentType">${excelContentType}</param>
+            	<param name="inputName">inputStream</param>
+            	<param name="contentDisposition">${contentDisposition}</param>
+            	<param name="bufferSize">1024</param>
+        	</result>
+    	</action>
+		<action name="exportarShowMore_*" method="exportarShowMore" class="tipoInstalacionAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/tipoInstalacion/showMore.jasper</param>
+				<param name="dataSource">elemento</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">{1}</param>
+			</result>
+		</action>
+
+		<action name="loadPopup" method="loadPopup" class="tipoInstalacionAction">
+			<result name="success">/jsp/tipoInstalacion/popup/loadTipoInstalacionPopup.jsp</result>
+		</action>
+		<action name="loadNoCTCPopup" method="loadNoCTCPopup" class="tipoInstalacionAction">
+			<result name="success">/jsp/tipoInstalacion/popup/loadTipoInstalacionNoCTCPopup.jsp</result>
+		</action>
+		<action name="searchPopup" method="searchPopup" class="tipoInstalacionAction">
+			<result name="success">/jsp/tipoInstalacion/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="moreResultsPopup" method="moreResultsPopup" class="tipoInstalacionAction">
+			<result name="success">/jsp/tipoInstalacion/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="selectElementoFromPopup" method="selectElementoFromPopup" class="tipoInstalacionAction">
+			<result name="success">/jsp/tipoInstalacion/popup/detalleTipoInstalacionSeleccionadaPopup.jsp</result>
+		</action>
+		<action name="preExportarList" method="preExportarList" class="tipoInstalacionAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="saveOrUpdate" method="saveOrUpdate" class="tipoInstalacionAction">
+			<result name="success" type="redirect">list</result>
+			<result name="input" type="tiles">edit/tipoInstalacion</result>
+			<result name="error" type="tiles">edit/tipoInstalacion</result>
+		</action>
+		<action name="edit" method="edit" class="tipoInstalacionAction">
+			<result name="success" type="tiles">edit/tipoInstalacion</result>
+		</action>
+		<action name="showMore" method="showMore" class="tipoInstalacionAction">
+			<result name="success" type="tiles">verMas/tipoInstalacion</result>
+			<result name="input" type="tiles">verMas/tipoInstalacion</result>
+		</action>
+		<action name="delete" method="delete" class="tipoInstalacionAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/tipoInstalacion</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="tipoInstalacionAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/tipoInstalacion</result>
+		</action>
+	</package>
+	<package name="ubicacionFisica" namespace="/ubicacionFisica" extends="authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="list" method="list" class="ubicacionFisicaAction">
+			<result name="success" type="tiles">list/ubicacionFisica</result>
+		</action>
+		<action name="volverList" method="volverList" class="ubicacionFisicaAction">
+			<result name="success" type="tiles">list/ubicacionFisica</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="ubicacionFisicaAction">
+			<result name="success">/jsp/ubicacionFisica/paginaList.jsp</result>
+		</action>
+		<action name="search" method="search" class="ubicacionFisicaAction">
+			<result name="success" type="tiles">list/ubicacionFisica</result>
+			<result name="input" type="redirect">volverList</result>
+			<result name="error" type="tiles">list/ubicacionFisica</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+
+		<action name="loadPopup" method="loadPopup" class="ubicacionFisicaAction">
+			<result name="success">/jsp/ubicacionFisica/popup/loadUbicacionFisicaPopup.jsp</result>
+		</action>
+		<action name="searchPopup" method="searchPopup" class="ubicacionFisicaAction">
+			<result name="success">/jsp/ubicacionFisica/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="moreResultsPopup" method="moreResultsPopup" class="ubicacionFisicaAction">
+			<result name="success">/jsp/ubicacionFisica/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="selectElementoFromPopup" method="selectElementoFromPopup" class="ubicacionFisicaAction">
+			<result name="success">/jsp/ubicacionFisica/popup/detalleUbicacionFisicaSeleccionadaPopup.jsp</result>
+		</action>
+		<action name="preExportarList" method="preExportarList" class="ubicacionFisicaAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="exportarList_PDF" method="exportarList_PDF" class="ubicacionFisicaAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/ubicacionFisica/listado.jasper</param>
+				<param name="dataSource">list</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">PDF</param>
+			</result>
+		</action>
+		<action name="exportarList_XLS" method="exportarList_XLS" class="ubicacionFisicaAction">
+        	<result type="stream">
+           	 	<param name="contentType">${excelContentType}</param>
+            	<param name="inputName">inputStream</param>
+            	<param name="contentDisposition">${contentDisposition}</param>
+            	<param name="bufferSize">1024</param>
+        	</result>
+    	</action>
+		<action name="exportarShowMore_*" method="exportarShowMore" class="ubicacionFisicaAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/ubicacionFisica/showMore.jasper</param>
+				<param name="dataSource">elemento</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">{1}</param>
+			</result>
+		</action>
+		<action name="saveOrUpdate" method="saveOrUpdate" class="ubicacionFisicaAction">
+			<result name="success" type="redirect">list</result>
+			<result name="input" type="tiles">edit/ubicacionFisica</result>
+			<result name="error" type="tiles">edit/ubicacionFisica</result>
+		</action>
+		<action name="edit" method="edit" class="ubicacionFisicaAction">
+			<result name="success" type="tiles">edit/ubicacionFisica</result>
+		</action>
+		<action name="showMore" method="showMore" class="ubicacionFisicaAction">
+			<result name="success" type="tiles">verMas/ubicacionFisica</result>
+			<result name="input" type="tiles">verMas/ubicacionFisica</result>
+		</action>
+		<action name="delete" method="delete" class="ubicacionFisicaAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/ubicacionFisica</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="ubicacionFisicaAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/ubicacionFisica</result>
+		</action>
+	</package>
+	<package name="ubicacionLogica" namespace="/ubicacionLogica" extends="authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="list" method="list" class="ubicacionLogicaAction">
+			<result name="success" type="tiles">list/ubicacionLogica</result>
+		</action>
+		<action name="volverList" method="volverList" class="ubicacionLogicaAction">
+			<result name="success" type="tiles">list/ubicacionLogica</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="ubicacionLogicaAction">
+			<result name="success">/jsp/ubicacionLogica/paginaList.jsp</result>
+		</action>
+		<action name="search" method="search" class="ubicacionLogicaAction">
+			<result name="success" type="tiles">list/ubicacionLogica</result>
+			<result name="input" type="redirect">volverList</result>
+			<result name="error" type="tiles">list/ubicacionLogica</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+
+		<action name="loadPopup" method="loadPopup" class="ubicacionLogicaAction">
+			<result name="success">/jsp/ubicacionLogica/popup/loadUbicacionLogicaPopup.jsp</result>
+		</action>
+		<action name="searchPopup" method="searchPopup" class="ubicacionLogicaAction">
+			<result name="success">/jsp/ubicacionLogica/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="moreResultsPopup" method="moreResultsPopup" class="ubicacionLogicaAction">
+			<result name="success">/jsp/ubicacionLogica/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="selectElementoFromPopup" method="selectElementoFromPopup" class="ubicacionLogicaAction">
+			<result name="success">/jsp/ubicacionLogica/popup/detalleUbicacionLogicaSeleccionadaPopup.jsp</result>
+		</action>
+		<action name="preExportarList" method="preExportarList" class="ubicacionLogicaAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="exportarList_PDF" method="exportarList_PDF" class="ubicacionLogicaAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/ubicacionLogica/listado.jasper</param>
+				<param name="dataSource">list</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">PDF</param>
+			</result>
+		</action>
+		<action name="exportarList_XLS" method="exportarList_XLS" class="ubicacionLogicaAction">
+        	<result type="stream">
+           	 	<param name="contentType">${excelContentType}</param>
+            	<param name="inputName">inputStream</param>
+            	<param name="contentDisposition">${contentDisposition}</param>
+            	<param name="bufferSize">1024</param>
+        	</result>
+    	</action>
+		<action name="exportarShowMore_*" method="exportarShowMore" class="ubicacionLogicaAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/ubicacionLogica/showMore.jasper</param>
+				<param name="dataSource">elemento</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">{1}</param>
+			</result>
+		</action>
+		<action name="saveOrUpdate" method="saveOrUpdate" class="ubicacionLogicaAction">
+			<result name="success" type="redirect">list</result>
+			<result name="input" type="tiles">edit/ubicacionLogica</result>
+			<result name="error" type="tiles">edit/ubicacionLogica</result>
+		</action>
+		<action name="edit" method="edit" class="ubicacionLogicaAction">
+			<result name="success" type="tiles">edit/ubicacionLogica</result>
+		</action>
+		<action name="showMore" method="showMore" class="ubicacionLogicaAction">
+			<result name="success" type="tiles">verMas/ubicacionLogica</result>
+			<result name="input" type="tiles">verMas/ubicacionLogica</result>
+		</action>
+		<action name="delete" method="delete" class="ubicacionLogicaAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/ubicacionLogica</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="ubicacionLogicaAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/ubicacionLogica</result>
+		</action>
+	</package>
+	<package name="ubicacionLogicaFisica" namespace="/ubicacionLogicaFisica" extends="authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="list" method="list" class="ubicacionLogicaFisicaAction">
+			<result name="success" type="tiles">list/ubicacionLogicaFisica</result>
+		</action>
+		<action name="volverList" method="volverList" class="ubicacionLogicaFisicaAction">
+			<result name="success" type="tiles">list/ubicacionLogicaFisica</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="ubicacionLogicaFisicaAction">
+			<result name="success">/jsp/ubicacionLogicaFisica/paginaList.jsp</result>
+		</action>
+		<action name="search" method="search" class="ubicacionLogicaFisicaAction">
+			<result name="success" type="tiles">list/ubicacionLogicaFisica</result>
+			<result name="input" type="redirect">volverList</result>
+			<result name="error" type="tiles">list/ubicacionLogicaFisica</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="preExportarList" method="preExportarList" class="ubicacionLogicaFisicaAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="exportarList_PDF" method="exportarList_PDF" class="ubicacionLogicaFisicaAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/ubicacionLogicaFisica/listado.jasper</param>
+				<param name="dataSource">list</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">PDF</param>
+			</result>
+		</action>
+		<action name="exportarList_XLS" method="exportarList_XLS" class="ubicacionLogicaFisicaAction">
+        	<result type="stream">
+           	 	<param name="contentType">${excelContentType}</param>
+            	<param name="inputName">inputStream</param>
+            	<param name="contentDisposition">${contentDisposition}</param>
+            	<param name="bufferSize">1024</param>
+        	</result>
+    	</action>
+		<action name="exportarShowMore_*" method="exportarShowMore" class="ubicacionLogicaFisicaAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/ubicacionLogicaFisica/showMore.jasper</param>
+				<param name="dataSource">elemento</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">{1}</param>
+			</result>
+		</action>
+		<action name="saveOrUpdate" method="saveOrUpdate" class="ubicacionLogicaFisicaAction">
+			<result name="success" type="redirect">list</result>
+			<result name="input" type="tiles">edit/ubicacionLogicaFisica</result>
+			<result name="error" type="tiles">edit/ubicacionLogicaFisica</result>
+		</action>
+		<action name="edit" method="edit" class="ubicacionLogicaFisicaAction">
+			<result name="success" type="tiles">edit/ubicacionLogicaFisica</result>
+		</action>
+		<action name="showMore" method="showMore" class="ubicacionLogicaFisicaAction">
+			<result name="success" type="tiles">verMas/ubicacionLogicaFisica</result>
+			<result name="input" type="tiles">verMas/ubicacionLogicaFisica</result>
+		</action>
+		<action name="delete" method="delete" class="ubicacionLogicaFisicaAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/ubicacionLogicaFisica</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="ubicacionLogicaFisicaAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/ubicacionLogicaFisica</result>
+		</action>
+	</package>
+	<package name="unidadMantenimiento" namespace="/unidadMantenimiento" extends="authenticate-default">
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<global-results>
+			<result name="error" type="tiles">error</result>
+			<result name="errorLogin" type="tiles">errorLogin</result>
+			<result name="sinPermisos" type="tiles">sinPermisos</result>
+		</global-results>
+		<action name="list" method="list" class="unidadMantenimientoAction">
+			<result name="success" type="tiles">list/unidadMantenimiento</result>
+		</action>
+		<action name="volverList" method="volverList" class="unidadMantenimientoAction">
+			<result name="success" type="tiles">list/unidadMantenimiento</result>
+			<result name="listAll" type="redirect">list</result>
+		</action>
+		<action name="moreResults" method="moreResults" class="unidadMantenimientoAction">
+			<result name="success">/jsp/unidadMantenimiento/paginaList.jsp</result>
+		</action>
+		<action name="search" method="search" class="unidadMantenimientoAction">
+			<result name="success" type="tiles">list/unidadMantenimiento</result>
+			<result name="input" type="redirect">volverList</result>
+			<result name="error" type="tiles">list/unidadMantenimiento</result>
+			<result name="json"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+
+		<action name="loadPopup" method="loadPopup" class="unidadMantenimientoAction">
+			<result name="success">/jsp/unidadMantenimiento/popup/loadUnidadMantenimientoPopup.jsp</result>
+		</action>
+		<action name="searchPopup" method="searchPopup" class="unidadMantenimientoAction">
+			<result name="success">/jsp/unidadMantenimiento/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="moreResultsPopup" method="moreResultsPopup" class="unidadMantenimientoAction">
+			<result name="success">/jsp/unidadMantenimiento/popup/bodyResultadosPopup.jsp</result>
+		</action>
+		<action name="selectElementoFromPopup" method="selectElementoFromPopup" class="unidadMantenimientoAction">
+			<result name="success">/jsp/unidadMantenimiento/popup/detalleUnidadMantenimientoSeleccionadaPopup.jsp</result>
+		</action>
+		<action name="preExportarList" method="preExportarList" class="unidadMantenimientoAction">
+			<result name="success"  type="stream">
+				<param name="inputStream">text/plain</param>
+			</result>
+		</action>
+		<action name="exportarList_PDF" method="exportarList_PDF" class="unidadMantenimientoAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/common/listado.jasper</param>
+				<param name="dataSource">list</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">PDF</param>
+			</result>
+		</action>
+		<action name="exportarList_XLS" method="exportarList_XLS" class="unidadMantenimientoAction">
+        	<result type="stream">
+           	 	<param name="contentType">${excelContentType}</param>
+            	<param name="inputName">inputStream</param>
+            	<param name="contentDisposition">${contentDisposition}</param>
+            	<param name="bufferSize">1024</param>
+        	</result>
+    	</action>
+		<action name="exportarShowMore_*" method="exportarShowMore" class="unidadMantenimientoAction">
+			<result name="success" type="jasper">
+				<param name="location">/informes/catalogos/common/showMore.jasper</param>
+				<param name="dataSource">elemento</param>
+				<param name="contentDisposition">attachment</param>
+				<param name="documentName">${nombreInforme}</param>
+				<param name="reportParameters">parametersList</param>
+				<param name="format">{1}</param>
+			</result>
+		</action>
+		<action name="saveOrUpdate" method="saveOrUpdate" class="unidadMantenimientoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="input" type="tiles">edit/unidadMantenimiento</result>
+			<result name="error" type="tiles">edit/unidadMantenimiento</result>
+		</action>
+		<action name="edit" method="edit" class="unidadMantenimientoAction">
+			<result name="success" type="tiles">edit/unidadMantenimiento</result>
+		</action>
+		<action name="showMore" method="showMore" class="unidadMantenimientoAction">
+			<result name="success" type="tiles">verMas/unidadMantenimiento</result>
+			<result name="input" type="tiles">verMas/unidadMantenimiento</result>
+		</action>
+		<action name="delete" method="delete" class="unidadMantenimientoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/unidadMantenimiento</result>
+		</action>
+		<action name="reactivar" method="reactivar" class="unidadMantenimientoAction">
+			<result name="success" type="redirect">list</result>
+			<result name="error" type="tiles">list/unidadMantenimiento</result>
+		</action>
+	</package>
+</struts>

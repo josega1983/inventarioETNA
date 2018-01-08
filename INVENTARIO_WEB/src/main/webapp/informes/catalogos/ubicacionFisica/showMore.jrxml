@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="verMasSollcitudes" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="abd052f1-62e0-488e-8372-445fc4f62f25">
+	<property name="ireport.zoom" value="0.9090909090909147"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="82ae3312-4f49-4db5-9f8b-7105f4dce1b0"/>
+	<subDataset name="Table Dataset 2" uuid="23078a4f-8e61-4263-aa54-7a9405693577"/>
+	<parameter name="URL_IMAGEN" class="java.lang.String"/>
+	<parameter name="URL_FAVICON" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR_SUBREPORTS" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="REPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\dev\\prj\\INVENTARIO\\INVENTARIO_WEB\\src\\main\\webapp\\informes\\catalogos\\localizacion\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TITULO" class="java.lang.String"/>
+	<field name="observaciones" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="id" class="java.lang.Long"/>
+	<field name="activo" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="fechaBaja" class="java.util.Date"/>
+	<field name="fechaAlta" class="java.util.Date"/>
+	<field name="field1" class="java.lang.String"/>
+	<field name="region.nombre" class="java.lang.String"/>
+	<field name="sector.nombre" class="java.lang.String"/>
+	<field name="localizacion.nombre" class="java.lang.String"/>
+	<field name="localizacion.codigoAIP" class="java.lang.String"/>
+	<field name="emplazamiento.nombre" class="java.lang.String"/>
+	<field name="emplazamiento.tipoEmplazamiento.nombre" class="java.lang.String"/>
+	<group name="Group1">
+		<groupExpression><![CDATA[(int)($V{REPORT_COUNT}/15)]]></groupExpression>
+	</group>
+	<group name="Group2">
+		<groupExpression><![CDATA[(int)($V{REPORT_COUNT}/5)]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="100" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="4" width="171" height="22" uuid="af9df476-fa23-4a09-a679-3910b48d6f1b"/>
+				<imageExpression><![CDATA[$P{URL_IMAGEN}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement mode="Opaque" x="718" y="4" width="84" height="86" uuid="ebafe948-86ed-4e20-a243-10312b22b962"/>
+				<imageExpression><![CDATA[$P{URL_FAVICON}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="SubTitle" x="237" y="76" width="329" height="22" forecolor="#858585" uuid="9c3aa140-68e2-440a-9cc8-ef0d15f6cccb"/>
+				<textElement textAlignment="Center">
+					<font fontName="ENAIRE Titillium Bold" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Detalle]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Transparent" x="101" y="4" width="600" height="72" forecolor="#000000" backcolor="#FFFFFF" uuid="03c44e05-2025-4e65-9e20-63a6d3b1e6ff"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="ENAIRE Titillium Bold" size="48" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TITULO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="60">
+			<frame>
+				<reportElement x="0" y="0" width="802" height="60" uuid="b91ccfe2-f9ae-4bd5-a075-0a570c90b9bd"/>
+				<staticText>
+					<reportElement x="0" y="0" width="101" height="20" uuid="1162cddb-d24f-463c-b4a2-e51f1bd49f14"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Bold" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Id]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="39" width="101" height="20" uuid="98ff8f25-3f47-458c-9eae-8d24cf15ad3a"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Bold" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Activo]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="264" y="39" width="101" height="20" uuid="c306d532-f2cf-4484-806a-5cf186263a9f">
+						<printWhenExpression><![CDATA[$F{activo}.equals("NO") && $F{fechaBaja} != null;]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Bold" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Fecha Baja]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="548" y="39" width="123" height="20" uuid="8c8439cc-793c-498f-9164-668d00c57923">
+						<printWhenExpression><![CDATA[$F{fechaAlta} != null;]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Bold" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Fecha Alta]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="101" y="0" width="163" height="20" uuid="a5177447-81f8-45d4-9da7-2b5c37f10972"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Regular"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="101" y="39" width="163" height="20" uuid="cf317431-60d2-4543-a17c-1725686a2d89"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Regular"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{activo}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="365" y="39" width="182" height="20" uuid="f4f7f86d-d979-4304-82a0-0a66218f7c98">
+						<printWhenExpression><![CDATA[$F{activo}.equals("NO") && $F{fechaBaja} != null;]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Regular"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fechaBaja}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="668" y="39" width="132" height="20" uuid="1c158131-a530-4a0d-9a61-3fd1090dcc22">
+						<printWhenExpression><![CDATA[$F{fechaAlta} != null]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Regular"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fechaAlta}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="100" y="19" width="699" height="20" uuid="662b334d-0ba9-4815-9986-0e6bfdae6f50"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Regular"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="19" width="101" height="20" uuid="3bb00dee-5a02-427e-8e59-51cb5cc48f41"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Bold" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nombre]]></text>
+				</staticText>
+			</frame>
+		</band>
+		<band height="20">
+			<printWhenExpression><![CDATA[$F{descripcion} != null;]]></printWhenExpression>
+			<staticText>
+				<reportElement x="0" y="0" width="101" height="20" uuid="5368814f-8892-4500-899f-42713885b3b6">
+					<printWhenExpression><![CDATA[$F{descripcion} != null;]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="ENAIRE Titillium Bold" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="101" y="0" width="701" height="20" isPrintWhenDetailOverflows="true" uuid="9141ccb1-bc9c-4d21-8055-992fb5840fbe">
+					<printWhenExpression><![CDATA[$F{descripcion} != null;]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="ENAIRE Titillium Regular"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="24">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="101" y="0" width="701" height="20" isPrintWhenDetailOverflows="true" uuid="836229c6-f17d-4d7c-9d53-892fbe3f3109"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="ENAIRE Titillium Regular"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{observaciones}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="101" height="20" uuid="f1690670-df21-4c93-b46f-e50e5d32b3c4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="ENAIRE Titillium Bold" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Observaciones]]></text>
+			</staticText>
+		</band>
+		<band height="61">
+			<printWhenExpression><![CDATA[$P{REPORT_DIR}  != null;]]></printWhenExpression>
+			<frame>
+				<reportElement x="0" y="0" width="802" height="60" uuid="cb6c2cad-9227-4686-a160-5efd6da7b90f"/>
+				<textField isBlankWhenNull="true">
+					<reportElement x="436" y="0" width="366" height="20" uuid="3010c36c-c5d5-4c9a-8acf-e221f7f5e5a8"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Regular"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{sector.nombre}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="76" y="20" width="304" height="20" uuid="ddb3413e-1891-4b00-9ada-44919d25e102"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Regular"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{localizacion.nombre}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="20" width="76" height="20" uuid="84b39ecc-56b3-46a4-86ea-97e562f9a281"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Bold" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Localización]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="380" y="20" width="56" height="20" uuid="7024ccb4-c5b1-41e9-832f-21a9bc3c613c"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Bold" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Código AIP]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="436" y="20" width="366" height="20" uuid="03de174e-1504-4732-a988-510e390f1af3"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Regular"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{localizacion.codigoAIP}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="40" width="76" height="20" uuid="0029e040-0ffe-46eb-b188-c130df00d6ad"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Bold" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Emplazamiento]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="76" y="40" width="304" height="20" uuid="fce302c7-cf61-49af-8378-b769b3053a9b"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Regular"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{emplazamiento.nombre}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="380" y="40" width="103" height="20" uuid="5dc3fe71-34e2-4617-9fee-0774835dcf69"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Bold" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Tipo de Emplazamiento]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="483" y="40" width="319" height="20" uuid="347b3221-835c-422a-82ec-dd5b934a8c92"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Regular"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{emplazamiento.tipoEmplazamiento.nombre}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="380" y="0" width="56" height="20" uuid="d97aab97-6876-4f0f-a62b-a290df4decc7"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Bold" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Sector]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="0" width="76" height="20" uuid="f3647d48-7e5d-4c3e-a683-295ed0e709c2"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Bold" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Región]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="76" y="0" width="304" height="20" uuid="1a83d6f4-d0a8-46fe-ab2f-58aee7d79904"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Regular"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{region.nombre}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-1" y="-1" width="801" height="24" forecolor="#CBCBCB" backcolor="#CBCBCB" uuid="845b4bf5-ea55-4a6f-9a31-3e675bf8ab91"/>
+				<textField>
+					<reportElement style="Column header" x="453" y="0" width="80" height="20" forecolor="#736343" uuid="e9490050-6799-4200-8678-0357a27906c7"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Bold" size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de "+$V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="22" y="1" width="197" height="20" forecolor="#736343" uuid="871ebdd9-a569-4a7a-b114-4328b5b110fd"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Bold" size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,236 @@
+/*.contenedor {
+	display: flex;
+	height: 100%;
+	width: 100%;
+}*/
+
+/*.contenedor .contenido {
+	width: 100%;
+}
+*/
+
+.configuration-container, section {
+	height: 100%;
+	width: 100%;
+}
+
+
+.inventory {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	height: 100%;
+	overflow-y: hidden;
+}
+
+
+.graph-container {
+	position: relative;
+		flex: 1 1 75%;
+	-ms-flex: 1 1 75%;
+	height: 100%;
+}
+
+.graph-container .graph-canvas.canvas-fullscreen {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: 10000;
+}
+
+
+.graph-container .graph-canvas {
+	height: 100%;
+	width: 100%;
+	background-color: #DAE4E4;
+}
+
+.graph-canvas.cursor-pointer {
+	cursor: pointer;
+}
+
+.menu-lateral-activo .graph-container .graph-canvas {
+	width: 100%;
+	height: 100%;
+}
+
+
+
+
+
+
+
+.elements-container {
+	display: flex;
+	flex-flow: column nowrap;
+	width: 300px;
+	height: 100%;
+	max-height: inherit;
+	background: #fafafa;
+	border-left: 1px solid #cbcbcb;
+	overflow-y: auto;
+	z-index: 9999;
+}
+
+
+
+.elements-container .elements {
+	display: flex;
+	flex-flow: column nowrap;
+		flex: 1 1 50%;
+	-ms-flex: 1 1 50%;
+	width: auto;
+	overflow-x: hidden;
+}
+.elements-container .elements:not(:last-child) {
+	margin-bottom: 5px;
+}
+
+.elements-container .elements .header{
+	height: 50px;
+    flex-shrink: 1;
+	width: 100%;
+	color: white;
+	background: #cbcbcb;
+	text-align: center;
+	display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.elements-container .elements .header p{
+	margin: 0;
+}
+
+
+
+
+
+
+
+.elements-container .elements .content{
+		flex: 1 1;
+	-ms-flex: 1 1;
+	width: 100%;
+	overflow-y: auto;
+	background: white;
+}
+.draggable-elements {
+	margin: 0;
+	padding: 0;
+}
+
+
+li.ui-draggable {
+	display: flex;
+	width: auto;
+	height: 50px;
+	list-style: none;
+	text-decoration: none;
+	font-weight: 0.5em;
+	background: white;
+	color: #7c7c7c;
+	justify-content: center;
+    align-items: center;
+    padding-left: 5px;
+	padding-right: 5px;
+}
+li.ui-draggable:not(:last-child) {
+	border-bottom: 1px solid #cbcbcb;
+}
+li.ui-draggable:hover {
+	background: #e8e8e8;
+}
+li.ui-draggable-dragging {
+	display: flex;
+	align-items:center;
+	width: auto;
+	height: 80px;
+	border-radius: 100%;
+	opacity: 0.5;
+	list-style: none;
+	text-decoration: none;
+	font-weight: 0.5em;
+	background: #009ee3;
+	color: white;
+	text-align: center;
+	margin: 5px 0 5px 0;
+	padding: 10px 10px 10px 10px;
+}
+
+
+
+
+.modal {
+	display: visible;
+	position: fixed;
+	z-index: 10000;
+}
+
+.modal-action-list {
+	display: flex;
+	flex-direction: column;
+}
+
+
+
+.icon-modal {
+	height: 32px;
+	width: 32px;
+	border: 1px solid #009ee3;
+	background: #d2e5ff;
+	border-radius: 100%;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 15px;
+	cursor: pointer;
+	-webkit-box-shadow:  7px 7px 6px -6px rgba(128, 128, 128,0.75);
+	-moz-box-shadow:  7px 7px 6px -6px rgba(128, 128, 128,0.75);
+	box-shadow:  7px 7px 6px -6px rgba(128, 128, 128,0.75);
+}
+
+.icon-modal:before {
+	display: inline-block;
+	background-repeat: no-repeat;
+	background-position: center;
+	color: #009ee3;
+	transition: background-color .5s ease;
+	vertical-align: -50%;
+}
+.icon-modal.disabled {
+	background: #dedede;
+	border: 1px solid #949494;
+	cursor: not-allowed; 
+}
+.icon-modal.disabled:before {
+	color: #949494;
+}
+
+.modal .icon-modal.icon-remove {
+	background: #009ee3;
+}
+.icon-modal.icon-remove:before {
+	color: white;
+}
+
+.modal .icon-modal.icon-share:before {
+	transform: rotate(90deg);
+}
+
+
+
+.canvas-options {
+	position: absolute;
+	height: auto;
+	width: auto;
+	bottom:0;
+	right: 0;
+	z-index: 10000;
+}
+
+.canvas-options .icon-modal {
+	margin: 0 10px 5px 0;
+}

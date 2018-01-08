@@ -1,0 +1,54 @@
+<div class="inventory">
+    <div class="graph-container">
+        <div id="graph" 
+            class="graph-canvas ui-droppable" 
+            resize-handler="$root.resizeCanvas()" 
+            ng-class="{'cursor-pointer': main.hoverNode, 'canvas-fullscreen': main.isFullscreen}">
+        </div>
+        <canvas-options-directive 
+            fullscreen-flag="main.isFullscreen" 
+            zoom-in-fn="main.zoomInCanvas()" 
+            zoom-out-fn="main.zoomOutCanvas()" 
+            fullscreen-fn="main.canvasFullscreen()" 
+            center-fn="main.centerTree()">
+        </canvas-options-directive>
+    </div>
+
+    <div class="elements-container">
+        <div class="elements">
+            <div class="header">
+                <p>Elementos</p>
+            </div>
+            <div class="content">
+                <ul class="draggable-elements">
+                    <li class="ui-draggable ui-draggable-handle" ng-repeat="element in main.elementsList track by $index" draggable-handler data-val="{{element.nombre}}">{{element.nombre}}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="elements">
+            <div class="header">
+                <p>Components</p>
+            </div>
+            <div class="content">
+                <ul class="draggable-elements">
+                    <li class="ui-draggable ui-draggable-handle" draggable-handler data-type="subelement" data-val="Comp1">Component1</li>
+                    <li class="ui-draggable ui-draggable-handle" draggable-handler data-type="subelement" data-val="Comp2">Component2</li>
+                    <li class="ui-draggable ui-draggable-handle" draggable-handler data-type="subelement" data-val="Comp3">Component3</li>
+                    <li class="ui-draggable ui-draggable-handle" draggable-handler data-type="subelement" data-val="Comp4">Component4</li>
+                    <li class="ui-draggable ui-draggable-handle" draggable-handler data-type="subelement" data-val="Comp5">Component5</li>
+                    <li class="ui-draggable ui-draggable-handle" draggable-handler data-type="subelement" data-val="Comp6">Component6</li>
+                    <li class="ui-draggable ui-draggable-handle" draggable-handler data-type="subelement" data-val="Comp7">Component7</li>
+                    <li class="ui-draggable ui-draggable-handle" draggable-handler data-type="subelement" data-val="Comp8">Component8</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<node-options-directive 
+    modal-info="main.modal" 
+    close-fn="main.closeMenu()" 
+    edit-fn="main.editNode()" 
+    clone-fn="main.duplicateBranch()" 
+    delete-fn="main.deleteNode()">        
+</node-options-directive>

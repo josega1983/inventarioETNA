@@ -1,0 +1,34 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:annotation-config/>
+	<bean id="operacionesCentro" class="es.enaire.inventario.backend.operaciones.OperacionesCentro" scope="prototype"></bean>
+	<bean id="operacionesConfiguracionesFamilia" class="es.enaire.inventario.backend.operaciones.OperacionesConfiguracionesFamilia" scope="prototype"></bean>
+	<bean id="operacionesConfiguracionesTipo" class="es.enaire.inventario.backend.operaciones.OperacionesConfiguracionesTipo" scope="prototype"></bean>	
+	<bean id="operacionesConfiguracionParametroFuncional" class="es.enaire.inventario.backend.operaciones.OperacionesConfiguracionParametroFuncional" scope="prototype"></bean>		
+	<bean id="operacionesElemento" class="es.enaire.inventario.backend.operaciones.OperacionesElemento" scope="prototype"></bean>	
+	<bean id="operacionesEmplazamiento" class="es.enaire.inventario.backend.operaciones.OperacionesEmplazamiento" scope="prototype"></bean>	
+	<bean id="operacionesEstadoElemento" class="es.enaire.inventario.backend.operaciones.OperacionesEstadoElemento" scope="prototype"></bean>	
+	<bean id="operacionesEstadoInstalacion" class="es.enaire.inventario.backend.operaciones.OperacionesEstadoInstalacion" scope="prototype"></bean>	
+	<bean id="operacionesFamiliaElemento" class="es.enaire.inventario.backend.operaciones.OperacionesFamiliaElemento" scope="prototype"></bean>	
+	<bean id="operacionesFamiliaInstalacion" class="es.enaire.inventario.backend.operaciones.OperacionesFamiliaInstalacion" scope="prototype"></bean>
+	<bean id="operacionesLocalizacion" class="es.enaire.inventario.backend.operaciones.OperacionesLocalizacion" scope="prototype"></bean>
+	<bean id="operacionesParametroFuncional" class="es.enaire.inventario.backend.operaciones.OperacionesParametroFuncional" scope="prototype"></bean>
+	<bean id="operacionesPropietarioActivo" class="es.enaire.inventario.backend.operaciones.OperacionesPropietarioActivo" scope="prototype"></bean>
+	<bean id="operacionesRegion" class="es.enaire.inventario.backend.operaciones.OperacionesRegion" scope="prototype"></bean>
+	<bean id="operacionesResponsableMantenimiento" class="es.enaire.inventario.backend.operaciones.OperacionesResponsableMantenimiento" scope="prototype"></bean>
+	<bean id="operacionesSector" class="es.enaire.inventario.backend.operaciones.OperacionesSector" scope="prototype"></bean>	
+	<bean id="operacionesTipoCampoParametro" class="es.enaire.inventario.backend.operaciones.OperacionesTipoCampoParametro" scope="prototype"></bean>
+	<bean id="operacionesTipoEmplazamiento" class="es.enaire.inventario.backend.operaciones.OperacionesTipoEmplazamiento" scope="prototype"></bean>	
+	<bean id="operacionesTipoInstalacion" class="es.enaire.inventario.backend.operaciones.OperacionesTipoInstalacion" scope="prototype"></bean>
+	<bean id="operacionesUbicacionFisica" class="es.enaire.inventario.backend.operaciones.OperacionesUbicacionFisica" scope="prototype"></bean>	
+	<bean id="operacionesUbicacionLogica" class="es.enaire.inventario.backend.operaciones.OperacionesUbicacionLogica" scope="prototype"></bean>
+	<bean id="operacionesUbicacionLogicaFisica" class="es.enaire.inventario.backend.operaciones.OperacionesUbicacionLogicaFisica" scope="prototype"></bean>
+	<bean id="operacionesUnidadMantenimiento" class="es.enaire.inventario.backend.operaciones.OperacionesUnidadMantenimiento" scope="prototype"></bean>
+	<bean id="operacionesValoresParametroElemento" class="es.enaire.inventario.backend.operaciones.OperacionesValoresParametroElemento" scope="prototype"></bean>	
+	<bean id="operacionesValoresParametroFuncional" class="es.enaire.inventario.backend.operaciones.OperacionesValoresParametroFuncional" scope="prototype"></bean>
+	<bean id="operacionesValoresParametrosFamiliasElemento" class="es.enaire.inventario.backend.operaciones.OperacionesValoresParametrosFamiliasElemento" scope="prototype"></bean>
+</beans>

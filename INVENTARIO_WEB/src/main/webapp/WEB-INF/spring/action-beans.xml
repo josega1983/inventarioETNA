@@ -1,0 +1,33 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:annotation-config/>
+	<bean id="centroAction" class="es.enaire.inventario.actions.CentroAction" scope="prototype"></bean>
+	<bean id="configuracionFamiliaAction" class="es.enaire.inventario.actions.ConfiguracionFamiliaAction" scope="prototype"></bean>
+	<bean id="configuracionesTipoAction" class="es.enaire.inventario.actions.ConfiguracionesTipoAction" scope="prototype"></bean>
+	<bean id="configuracionParametroFuncionalAction" class="es.enaire.inventario.actions.ConfiguracionParametroFuncionalAction" scope="prototype"></bean>
+	<bean id="elementoAction" class="es.enaire.inventario.actions.ElementoAction" scope="prototype"></bean>
+	<bean id="emplazamientoAction" class="es.enaire.inventario.actions.EmplazamientoAction" scope="prototype"></bean>
+	<bean id="estadoElementoAction" class="es.enaire.inventario.actions.EstadoElementoAction" scope="prototype"></bean>
+	<bean id="estadoInstalacionAction" class="es.enaire.inventario.actions.EstadoInstalacionAction" scope="prototype"></bean>	
+	<bean id="familiaElementoAction" class="es.enaire.inventario.actions.FamiliaElementoAction" scope="prototype"></bean>		
+	<bean id="familiaInstalacionAction" class="es.enaire.inventario.actions.FamiliaInstalacionAction" scope="prototype"></bean>	
+	<bean id="localizacionAction" class="es.enaire.inventario.actions.LocalizacionAction" scope="prototype"></bean>
+	<bean id="loginAction" class="es.enaire.inventario.actions.LoginAction" scope="prototype"></bean>
+	<bean id="migasAction" class="es.enaire.inventario.actions.MigasAction" scope="prototype"></bean>
+	<bean id="parametroFuncionalAction" class="es.enaire.inventario.actions.ParametroFuncionalAction" scope="prototype"></bean>
+	<bean id="propietarioActivoAction" class="es.enaire.inventario.actions.PropietarioActivoAction" scope="prototype"></bean>
+	<bean id="regionAction" class="es.enaire.inventario.actions.RegionAction" scope="prototype"></bean>
+	<bean id="responsableMantenimientoAction" class="es.enaire.inventario.actions.ResponsableMantenimientoAction" scope="prototype"></bean>
+	<bean id="sectorAction" class="es.enaire.inventario.actions.SectorAction" scope="prototype"></bean>
+	<bean id="tipoEmplazamientoAction" class="es.enaire.inventario.actions.TipoEmplazamientoAction" scope="prototype"></bean>
+	<bean id="tipoInstalacionAction" class="es.enaire.inventario.actions.TipoInstalacionAction" scope="prototype"></bean>
+	<bean id="ubicacionFisicaAction" class="es.enaire.inventario.actions.UbicacionFisicaAction" scope="prototype"></bean>
+	<bean id="ubicacionLogicaAction" class="es.enaire.inventario.actions.UbicacionLogicaAction" scope="prototype"></bean>
+	<bean id="ubicacionLogicaFisicaAction" class="es.enaire.inventario.actions.UbicacionLogicaFisicaAction" scope="prototype"></bean>	
+	<bean id="unidadMantenimientoAction" class="es.enaire.inventario.actions.UnidadMantenimientoAction" scope="prototype"></bean>	
+	<bean id="welcomeAction" class="es.enaire.inventario.actions.WelcomeAction" scope="prototype"></bean>
+</beans>

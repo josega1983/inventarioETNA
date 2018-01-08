@@ -1,0 +1,114 @@
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+	<definition name="baseAngularLayout" template="/jsp/common/baseAngularLayout.jsp">
+		<put-attribute name="title" value="Template"/>
+		<put-attribute name="header" value="/jsp/common/header.jsp"/>
+		<put-attribute name="menu" value="/jsp/common/menu.jsp"/>
+		<put-attribute name="body" value="/jsp/common/welcome.jsp"/>
+		<put-attribute name="menuRight" value="baseLayout.menuRight" />
+		<put-attribute name="searchForm" value=""/>
+		<put-attribute name="footer" value="/jsp/common/footer.jsp"/>
+    </definition>
+	<definition name="baseLayout" template="/jsp/common/baseLayout.jsp">
+		<put-attribute name="title" value="Template"/>
+		<put-attribute name="header" value="/jsp/common/header.jsp"/>
+		<put-attribute name="menu" value="/jsp/common/menu.jsp"/>
+		<put-attribute name="body" value="/jsp/common/welcome.jsp"/>
+		<put-attribute name="menuRight" value="baseLayout.menuRight" />
+		<put-attribute name="searchForm" value=""/>
+		<put-attribute name="footer" value="/jsp/common/footer.jsp"/>
+    </definition>
+	<definition name="baseLayout.menuRight" template="/jsp/common/menuRight/baseLayout.jsp">
+		<put-attribute name="menu-nuevo" value="/jsp/common/menuRight/nuevo.jsp"/>
+		<put-attribute name="menu-exportar" value="/jsp/common/menuRight/exportar.jsp"/>
+		<put-attribute name="menu-buscar" value="/jsp/common/menuRight/buscar.jsp"/>
+	</definition>
+
+	<definition name="baseLayout.menuRight_noNewSearch" extends="baseLayout.menuRight">
+		<put-attribute name="menu-nuevo" value=""/>
+		<put-attribute name="menu-buscar" value=""/>
+	</definition>
+	<definition name="baseLayout.menuRight_noSearch" extends="baseLayout.menuRight">
+		<put-attribute name="menu-exportar" value=""/>
+		<put-attribute name="menu-buscar" value=""/>
+	</definition>
+
+	<definition name="baseVolverLayout" template="/jsp/common/baseVolverBodyLayout.jsp">
+		<put-attribute name="title" value="Template"/>
+		<put-attribute name="header" value="/jsp/common/header.jsp"/>
+		<put-attribute name="menu" value="/jsp/common/menu.jsp"/>
+		<put-attribute name="body" value="/jsp/common/welcome.jsp"/>
+		<put-attribute name="menuRight" value="baseLayout.menuRight" />
+		<put-attribute name="searchForm" value=""/>
+		<put-attribute name="footer" value="/jsp/common/footer.jsp"/>
+	</definition>
+
+	<definition name="sinPermisos" extends="baseLayout">
+        <put-attribute name="title" value="Inicio"/>
+        <put-attribute name="body" value="/jsp/common/sinPermisos.jsp"/>
+    </definition>
+
+    <definition name="errorLogin" template="/jsp/error/errorLogin.jsp">
+    </definition>
+
+    <definition name="errorSession" template="/jsp/error/errorSesionExpired.jsp">
+    </definition>
+
+    <definition name="salir" template="/jsp/common/salir.jsp"></definition>
+
+	<definition name="welcome" extends="baseLayout">
+        <put-attribute name="title" value="Inicio"/>
+        <put-attribute name="body" value="/jsp/common/welcome.jsp"/>
+        <put-attribute name="menuRight" value="baseLayout.menuRight_noNewSearch"/>
+    </definition>
+
+
+	<definition name="login" template="/jsp/login/login.jsp">
+		<put-attribute name="title" value="Template"/>
+		<put-attribute name="header" value="/jsp/login/headerLogin.jsp"/>
+		<put-attribute name="body" value="/jsp/login/bodyLogin.jsp"/>
+		<put-attribute name="footer" value="/jsp/common/footer.jsp"/>
+    </definition>
+
+	<definition name="error" extends="baseLayout">
+		<put-attribute name="title" value="Inicio"/>
+		<put-attribute name="body" value="/jsp/common/error.jsp"/>
+		<put-attribute name="menu-buscar" value=""/>
+	</definition>
+
+	<definition name="WILDCARD:editConfiguration/*" extends="baseAngularLayout">
+		<put-attribute name="title" value="Configuración de {1}"/>
+		<put-attribute name="body" value="/jsp/{1}/editCreate/editCreate.jsp"/>
+		<put-attribute name="menuRight" value="" />
+	</definition>
+
+	<definition name="WILDCARD:list/*" extends="baseLayout">
+		<put-attribute name="title" value="Listado de {1}"/>
+		<put-attribute name="body"  value="/jsp/{1}/list.jsp"/>
+		<put-attribute name="searchForm" value="/jsp/{1}/search.jsp"/>
+	</definition>
+	<definition name="WILDCARD:edit/*" extends="baseVolverLayout">
+		<put-attribute name="title" value="Edición/Creación de {1}"/>
+		<put-attribute name="body"  value="/jsp/{1}/editCreate.jsp"/>
+		<put-attribute name="menuRight" value="" />
+	</definition>
+	<definition name="WILDCARD:solicitud/*" extends="baseVolverLayout">
+		<put-attribute name="title" value="Solicitud"/>
+		<put-attribute name="body"  value="/jsp/{1}/solicitud.jsp"/>
+		<put-attribute name="searchForm" value="/jsp/{1}/search.jsp"/>
+	</definition>
+	<definition name="WILDCARD:verMas/*" extends="baseVolverLayout">
+		<put-attribute name="title" value="Detalle {1}"/>
+		<put-attribute name="body"  value="/jsp/{1}/verMas.jsp"/>
+		<put-attribute name="searchForm" value="/jsp/{1}/search.jsp"/>
+	</definition>
+	<definition name="WILDCARD:configurationVerMas/*" extends="baseAngularLayout">
+		<put-attribute name="title" value="Detalle {1}"/>
+		<put-attribute name="body"  value="/jsp/{1}/verMas.jsp"/>
+		<put-attribute name="searchForm" value="/jsp/{1}/search.jsp"/>
+	</definition>
+</tiles-definitions>

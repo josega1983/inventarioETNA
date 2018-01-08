@@ -1,0 +1,284 @@
+
+/*******************/
+/*      MENU       */
+/*******************/
+
+.menu {
+	bottom: 0;
+	width: 69px;
+	border-right: 1px solid #cbcbcb;
+	padding-top: 20px;
+	text-align: center;
+	background: #fafafa;
+	transition: width .3s ease-in;
+	display: -ms-flex;
+		display: flex;
+	-ms-flex-direction: column;
+		flex-direction: column;
+	overflow-y: auto;
+}
+
+/* botones para desplegar o plegar el menu principal */
+.menu-desplegar,
+.menu-plegar {
+	display: block;
+	cursor:pointer;
+	text-indent: -99em;
+	white-space: nowrap;
+	margin-bottom: 30px;
+}
+.menu-plegar {
+	padding-right: 20px;
+	background: url("../images/plegar.png") right no-repeat;
+	background-origin: content-box;
+	display: none;
+}
+.menu-desplegar {
+	background: url("../images/desplegar.png") center no-repeat;
+}
+
+
+/* extiende el menu principal */
+.menu-lateral-activo .menu {
+	width: 260px;
+	text-align: left;
+}
+
+.menu-lateral-activo .menu .menu-plegar {
+	display: block;
+}
+.menu-lateral-activo .menu .menu-desplegar {
+	display: none;
+}
+
+
+/***************************/
+/*      MENU OPTIONS       */
+/***************************/
+.submenu-title,
+.menu-opcion,
+.menu-salir > a {
+	overflow: hidden;
+	display: block;
+	height: 42px;
+	transition: background-color .5s ease;
+	color: #7c7c7c;
+	text-decoration: none;
+}
+
+/* WHEN MENU IS EXPANDED */
+.menu-lateral-activo .menu .menu-opcion,
+.menu-lateral-activo .menu .menu-salir > a {
+	display: -ms-flex;
+		display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	padding-left: 21px;
+	text-align: center;
+}
+.menu-lateral-activo .menu .menu-salir > p,
+.menu-lateral-activo .menu .menu-opcion > p {
+	white-space: nowrap;
+	display: block;
+	padding-left: 15px;
+}
+.menu-lista > .menu-item.activo {
+
+	background: -webkit-linear-gradient(left, #909090, #909090 8px, transparent 8px, transparent 100%); /* For Safari 5.1 to 6.0 */
+	background: -moz-linear-gradient(left, #909090, #909090 8px, transparent 8px, transparent 100%); /* For Firefox 3.6 to 15 */
+	background: -o-linear-gradient(left, #909090, #909090 8px, transparent 8px, transparent 100%); /* For Opera 11.1 to 12.0 */ 
+	background: linear-gradient(left, #909090, #909090 8px, transparent 8px, transparent 100%); /* Standard syntax */
+	background: linear-gradient(left, #909090, #909090 8px, transparent 8px, transparent 100%); /* IE ? */
+	background: -ms-linear-gradient(left, #909090, #909090 8px, transparent 8px, transparent 100%); /* IE 11 */
+}
+.submenu-modal > .menu-item.activo,
+.submenu .menu-item.activo {
+	background: rgba(0, 158, 227, 0.3);
+}
+.submenu-modal > .menu-item.activo > a,
+.submenu .menu-item.activo > a {
+	color: white;
+}
+
+
+/**********************/
+/*      SUBMENU       */
+/**********************/
+
+.menu-desplegarSubmenu {
+	position: absolute;
+	display: none;
+	right: 10px;
+	text-indent: 100%;
+	overflow: hidden;
+	white-space: nowrap;
+	background: url("../images/abajo.png") center no-repeat;
+	background-size: 15px auto;
+	width: 20px;
+	height: 42px;
+}
+.menu-desplegarSubmenu.is-abierto {
+	background-image: url("../images/arriba.png");
+}
+/* submenu only shown when main menu extended */
+.menu-lateral-activo .menu .menu-desplegarSubmenu {
+	display: block;
+}
+
+
+.submenu {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	display: none;
+	font-size: .85em;
+}
+.submenu .menu-opcion,
+.submenu .menu-salir > a {
+	background: transparent;
+	padding-left: 0;
+	height: 35px;
+}
+
+
+.menu .submenu,
+.menu .submenu .submenu,
+.menu .submenu .submenu .submenu {
+	-webkit-box-shadow: inset 0px 7px 6px -6px rgba(128, 128, 128,0.75),inset 0px -7px 6px -6px rgba(128, 128, 128,0.75);
+	-moz-box-shadow: inset 0px 7px 6px -6px rgba(128, 128, 128,0.75),inset 0px -7px 6px -6px rgba(128, 128, 128,0.75);
+	box-shadow: inset 0px 7px 6px -6px rgba(128, 128, 128,0.75),inset 0px -7px 6px -6px rgba(128, 128, 128,0.75);
+	background: #efefef;
+}
+.submenu-modal .submenu {
+	-webkit-box-shadow: inset 0px 7px 6px -6px rgba(128, 128, 128,0.75),inset 0px -7px 6px -6px rgba(128, 128, 128,0.75), inset 7px 0px 6px -6px rgba(128, 128, 128,0.75);
+	-moz-box-shadow: inset 0px 7px 6px -6px rgba(128, 128, 128,0.75),inset 0px -7px 6px -6px rgba(128, 128, 128,0.75), inset 7px 0px 6px -6px rgba(128, 128, 128,0.75);
+	box-shadow: inset 0px 7px 6px -6px rgba(128, 128, 128,0.75),inset 0px -7px 6px -6px rgba(128, 128, 128,0.75), inset 7px 0px 6px -6px rgba(128, 128, 128,0.75);
+	background: #efefef;
+}
+.menu .submenu .menu-opcion {
+	padding-left: 40px;
+}
+
+
+
+.menu .submenu .submenu {
+	background: #e0dfdf;
+}
+.submenu-modal .submenu .submenu {
+	-webkit-box-shadow: inset 0px 7px 6px -6px rgba(128, 128, 128,0.75),inset 0px -7px 6px -6px rgba(128, 128, 128,0.75), inset 7px 0px 6px -6px rgba(128, 128, 128,0.75);
+	-moz-box-shadow: inset 0px 7px 6px -6px rgba(128, 128, 128,0.75),inset 0px -7px 6px -6px rgba(128, 128, 128,0.75), inset 7px 0px 6px -6px rgba(128, 128, 128,0.75);
+	box-shadow: inset 0px 7px 6px -6px rgba(128, 128, 128,0.75),inset 0px -7px 6px -6px rgba(128, 128, 128,0.75), inset 7px 0px 6px -6px rgba(128, 128, 128,0.75);
+	background: #e0dfdf;
+}
+.menu .submenu .submenu .menu-opcion {
+	padding-left: 60px;
+}
+
+
+
+.menu .submenu .submenu .submenu {
+	background: #cecdcd;
+}
+.submenu-modal .submenu .submenu .submenu {
+	-webkit-box-shadow: inset 0px 7px 6px -6px rgba(128, 128, 128,0.75),inset 0px -7px 6px -6px rgba(128, 128, 128,0.75), inset 7px 0px 6px -6px rgba(128, 128, 128,0.75);
+	-moz-box-shadow: inset 0px 7px 6px -6px rgba(128, 128, 128,0.75),inset 0px -7px 6px -6px rgba(128, 128, 128,0.75), inset 7px 0px 6px -6px rgba(128, 128, 128,0.75);
+	box-shadow: inset 0px 7px 6px -6px rgba(128, 128, 128,0.75),inset 0px -7px 6px -6px rgba(128, 128, 128,0.75), inset 7px 0px 6px -6px rgba(128, 128, 128,0.75);
+	background: #cecdcd;
+}
+.menu .submenu .submenu .submenu .menu-opcion {
+	padding-left: 80px;
+}
+
+
+
+/***************************/
+/*      SUBMENU MODAL      */
+/***************************/
+
+
+/* submenu shown only when main menu is not extended */
+.submenu-modal {
+	position: fixed;
+	display: none;
+	width: auto;
+	min-width: 200px;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	align-items: center;
+	list-style: none;
+	background: #efefef;
+	overflow-y: auto;
+	-webkit-box-shadow: inset 7px 0px 6px -6px rgba(128, 128, 128,0.75), 7px 0px 6px -6px rgba(128, 128, 128,0.75);
+	-moz-box-shadow: inset 7px 0px 6px -6px rgba(128, 128, 128,0.75), 7px 0px 6px -6px rgba(128, 128, 128,0.75);
+	box-shadow: inset 7px 0px 6px -6px rgba(128, 128, 128,0.75), 7px 0px 6px -6px rgba(128, 128, 128,0.75);
+}
+
+.submenu-modal .submenu-title {
+	display: inline-block;
+	width: 100%;
+	height: auto;
+	align-content: center;
+	background: white;
+	text-align: center;
+	border-bottom: 2px solid #9ccce1;
+}
+
+.submenu-modal .menu-item {
+	text-align: center;
+	text-indent: 30px;
+}
+/*.submenu-modal .menu-opcion:hover {
+	background: #e9ecef;
+}*/
+.submenu-modal .menu-item:first-child:before,
+.submenu-modal .menu-item:before,
+.submenu-modal .menu-item:after {
+	content: none;
+}
+.submenu-modal .menu-item a {
+	text-decoration: none;
+	color: #666d73;
+	display: flex;
+	align-items: center;
+	padding-right: 20px;
+}
+
+
+.submenu-modal .menu-desplegarSubmenu {
+	display: flex;
+}
+
+.blue-background {
+	background: #009ee3 !important;
+}
+.blue-background .icon:before {
+	color: white;
+}
+
+.submenu-modal .menu-opcion.is-activo + .submenu {
+	display: block;
+}
+
+/**********************************/
+/*      MENU SPECIAL ICONS        */
+/**********************************/
+
+.menu-salir {
+	display: flex;
+	margin-top: auto;
+	border-top: 1px solid #cbcbcb;
+	justify-content: center;
+	font-weight: 5;
+}
+.menu-salir .icon.icon-thinOff:before {
+	color: #ff6a6a;
+	padding-right: 5px;
+}
+
+
+.menu-salir > a {
+	text-transform: uppercase;
+	color: #ff6a6a;
+	height: 44px;
+}

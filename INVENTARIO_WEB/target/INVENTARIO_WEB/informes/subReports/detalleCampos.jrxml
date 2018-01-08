@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="campos" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="06d99045-366b-4633-8113-9c4354fbd1f7">
+	<property name="ireport.zoom" value="0.8250000000000002"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#8FAFCC">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#CFDBE6">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#F3F6F8"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="36165321-362a-49d6-a817-0c2dc2d90428"/>
+	<field name="nombreCampo" class="java.lang.String"/>
+	<field name="tipoCampoParametro.nombre" class="java.lang.String"/>
+	<pageHeader>
+		<band height="26">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="811" height="26" backcolor="#9999FF" uuid="6ea2c7f1-4051-41b7-93bc-64ff24d2724e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="ENAIRE Titillium Bold" size="14"/>
+				</textElement>
+				<text><![CDATA[CAMPOS PARÁMETROS]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="21">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="811" height="21" backcolor="#66CCFF" uuid="920cb21c-e3e6-46fb-98ef-3a6602ea09ee"/>
+				<staticText>
+					<reportElement x="0" y="0" width="426" height="20" uuid="48a200c1-fa77-4aec-9eeb-eacd29805984"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Bold"/>
+					</textElement>
+					<text><![CDATA[Nombre de campo]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="426" y="0" width="385" height="20" uuid="0b87cd23-9cfa-436f-b66e-cd5ecb0218e4"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ENAIRE Titillium Bold"/>
+					</textElement>
+					<text><![CDATA[Tipo]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21">
+			<textField>
+				<reportElement x="0" y="0" width="426" height="20" uuid="931aaa38-d1fb-4d59-9cc8-8a0fba37baa0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="ENAIRE Titillium Regular"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreCampo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="414" y="1" width="397" height="20" uuid="d756f0e7-0bca-4976-a140-e807c269706f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="ENAIRE Titillium Regular"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoCampoParametro.nombre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

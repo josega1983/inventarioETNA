@@ -1,0 +1,44 @@
+
+.graph-container {
+	position: relative;
+	width: 100%;
+	height: 594px;
+}
+
+.graph-container .graph-canvas.canvas-fullscreen {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: 10000;
+}
+
+.graph-container .graph-canvas {
+	height: 100%;
+	width: 100%;
+	background-color: #DAE4E4;
+}
+.graph-canvas.cursor-pointer {
+	cursor: pointer;
+}
+
+.menu-lateral-activo .graph-container .graph-canvas {
+	width: 100%;
+	height: 100%;
+}
+
+.vis-button {
+	display: none;
+}
+
+
+.plegable-contenido {
+	height: 100%;
+	transition: height 0.3s ease-in;
+	border: 1px solid #dcdcdc;
+	border-top: 0;
+}
+.is-plegado .plegable-contenido {
+	height: 0;
+}

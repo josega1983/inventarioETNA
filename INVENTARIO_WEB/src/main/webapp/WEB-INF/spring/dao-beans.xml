@@ -1,0 +1,34 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:annotation-config/>
+	<bean id="centroDAO" class="es.enaire.inventario.dao.impl.CentroDAOImpl" scope="prototype"></bean>
+	<bean id="configuracionesFamiliaDAO" class="es.enaire.inventario.dao.impl.ConfiguracionesFamiliaDAOImpl" scope="prototype"></bean>
+	<bean id="configuracionesTipoDAO" class="es.enaire.inventario.dao.impl.ConfiguracionesTipoDAOImpl" scope="prototype"></bean>
+	<bean id="configuracionParametroFuncionalDAO" class="es.enaire.inventario.dao.impl.ConfiguracionParametroFuncionalDAOImpl" scope="prototype"></bean>		
+	<bean id="elementoDAO" class="es.enaire.inventario.dao.impl.ElementoDAOImpl" scope="prototype"></bean>
+	<bean id="emplazamientoDAO" class="es.enaire.inventario.dao.impl.EmplazamientoDAOImpl" scope="prototype"></bean>
+	<bean id="estadoElementoDAO" class="es.enaire.inventario.dao.impl.EstadoElementoDAOImpl" scope="prototype"></bean>
+	<bean id="estadoInstalacionDAO" class="es.enaire.inventario.dao.impl.EstadoInstalacionDAOImpl" scope="prototype"></bean>
+	<bean id="familiaElementoDAO" class="es.enaire.inventario.dao.impl.FamiliaElementoDAOImpl" scope="prototype"></bean>	
+	<bean id="familiaInstalacionDAO" class="es.enaire.inventario.dao.impl.FamiliaInstalacionDAOImpl" scope="prototype"></bean>
+	<bean id="localizacionDAO" class="es.enaire.inventario.dao.impl.LocalizacionDAOImpl" scope="prototype"></bean>
+	<bean id="parametroFuncionalDAO" class="es.enaire.inventario.dao.impl.ParametroFuncionalDAOImpl" scope="prototype"></bean>
+	<bean id="propietarioActivoDAO" class="es.enaire.inventario.dao.impl.PropietarioActivoDAOImpl" scope="prototype"></bean>
+	<bean id="regionDAO" class="es.enaire.inventario.dao.impl.RegionDAOImpl" scope="prototype"></bean>
+	<bean id="responsableMantenimientoDAO" class="es.enaire.inventario.dao.impl.ResponsableMantenimientoDAOImpl" scope="prototype"></bean>
+	<bean id="sectorDAO" class="es.enaire.inventario.dao.impl.SectorDAOImpl" scope="prototype"></bean>
+	<bean id="tipoCampoParametroDAO" class="es.enaire.inventario.dao.impl.TipoCampoParametroDAOImpl" scope="prototype"></bean>	
+	<bean id="tipoEmplazamientoDAO" class="es.enaire.inventario.dao.impl.TipoEmplazamientoDAOImpl" scope="prototype"></bean>
+	<bean id="tipoInstalacionDAO" class="es.enaire.inventario.dao.impl.TipoInstalacionDAOImpl" scope="prototype"></bean>
+	<bean id="ubicacionFisicaDAO" class="es.enaire.inventario.dao.impl.UbicacionFisicaDAOImpl" scope="prototype"></bean>
+	<bean id="ubicacionLogicaDAO" class="es.enaire.inventario.dao.impl.UbicacionLogicaDAOImpl" scope="prototype"></bean>	
+	<bean id="ubicacionLogicaFisicaDAO" class="es.enaire.inventario.dao.impl.UbicacionLogicaFisicaDAOImpl" scope="prototype"></bean>	
+	<bean id="unidadMantenimientoDAO" class="es.enaire.inventario.dao.impl.UnidadMantenimientoDAOImpl" scope="prototype"></bean>
+	<bean id="valoresParametroElementoDAO" class="es.enaire.inventario.dao.impl.ValoresParametroElementoDAOImpl" scope="prototype"></bean>
+	<bean id="valoresParametroFuncionalDAO" class="es.enaire.inventario.dao.impl.ValoresParametroFuncionalDAOImpl" scope="prototype"></bean>
+	<bean id="valoresParametrosFamiliasElementoDAO" class="es.enaire.inventario.dao.impl.ValoresParametrosFamiliasElementoDAOImpl" scope="prototype"></bean>
+</beans>

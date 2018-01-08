@@ -1,0 +1,67 @@
+{"options": {
+		"layout": {
+			"hierarchical": {
+				"direction": "UD",
+				"sortMethod": "directed",
+				"nodeSpacing": 150
+			}
+		},
+		"interaction": {
+			"dragNodes" :false,
+			"hover":true
+		},
+		"manipulation": {
+			"addNode": true,
+			"addEdge": true,
+			"editEdge": true,
+			"deleteNode": true,
+			"deleteEdge": true
+		},
+		"physics": {
+			"enabled": false
+		},
+		"nodes": {
+			"heightConstraint": {
+				"minimum": 72
+			},
+			"widthConstraint": {
+				"minimum": 72,
+				"maximum": 72
+			},
+			"color": {
+				"border": "#009ee3",
+				"background": "#009ee3",
+				"highlight": {
+					"border": "#2B7CE9",
+					"background": "#D2E5FF"
+				},
+				"hover": {
+					"border": "#2B7CE9",
+					"background": "#D2E5FF"
+				}
+			},
+			"font": {
+				"size": 15,
+				"color": "white",
+				"face": "icomoon"
+			},
+			"shadow":{
+				"enabled": true,
+				"color": "rgba(128, 128, 128,0.75)",
+				"size":2,
+				"x":2,
+				"y":2
+			}
+		},
+		"edges": {
+			"shadow":{
+				"enabled": true,
+				"color": "rgba(128, 128, 128,0.75)",
+				"size":2,
+				"x":2,
+				"y":2
+			},
+			"chosen": false
+		}
+	}
+}

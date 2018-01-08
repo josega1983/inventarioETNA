@@ -1,0 +1,27 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@taglib uri="/struts-tags" prefix="s" %>
+
+
+
+<s:form theme="simple" id="filtroPopupForm" class="form-view">
+	<div class="form-row">
+		<label class="col-min">
+			<s:property value="getText('global.id')"/>
+			<input type="number" min="1" max="999999999" name="filtro.id" value="">
+		</label>
+		<label class="col-min">
+			<s:property value="getText('region')"/>
+			<s:textfield maxlength="30" name="filtro.region.nombre" key="centro" theme="simple"/>
+		</label>
+		<label class="col-min">
+			<s:property value="getText('localizacion')"/>
+			<s:textfield maxlength="30" name="filtro.localizacion.nombre" key="localizacion" theme="simple"/>
+		</label>
+		<label class="col-max">
+			<s:property value="getText('emplazamiento')"/>
+			<s:textfield maxlength="30" name="filtro.emplazamiento.nombre" key="emplazamiento" theme="simple"/>
+		</label>						
+	</div>
+</s:form>
+
+

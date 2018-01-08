@@ -1,0 +1,10 @@
+<div ng-hide="!info.modalIsVisible" class="modal" ng-style="info.modalClass">
+	<div class="modal-action-list">
+		<a class="icon-modal icon-remove" ng-style="info.iconClass" ng-click="onClose()"></a>
+		<a class="icon-modal icon-pencil" ng-style="info.iconClass" ng-click="onEdit()"></a>
+		<a ng-class="{'disabled': info.hideOption}" class="icon-modal icon-share" ng-style="info.iconClass" ng-click="onClone()"></a>
+		<a ng-class="{'disabled': info.hideOption}" class="icon-modal icon-copy" ng-style="info.iconClass" ng-click="onCopy()"></a>
+		<a ng-class="{'disabled': info.hidePaste}" class="icon-modal icon-paste" ng-style="info.iconClass" ng-click="onPaste()"></a>
+		<a class="icon-modal icon-bin" ng-style="info.iconClass" ng-click="onDelete()"></a>
+	</div>
+</div>

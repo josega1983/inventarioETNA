@@ -1,0 +1,6 @@
+<div class="canvas-options" ng-style="isFullscreen && {'position': 'fixed'}">
+	<a class="icon-modal icon-zoomin" ng-click="zoomIn()"></a>
+	<a class="icon-modal icon-zoomout" ng-click="zoomOut()"></a>
+	<a class="icon-modal icon-search" ng-click="onCenter()"></a>
+	<a class="icon-modal" ng-class="{'icon-fullscreen' : !isFullscreen, 'icon-shrink' : isFullscreen}" ng-click="onFullscreen()"></a>
+</div>
